@@ -1,5 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
+import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
+import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -7,13 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name="Cita")
 @Entity(name="Cita")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idCita")
 
 public class Cita {
     @Id
@@ -41,4 +44,7 @@ public class Cita {
     @Column(name = "Estado_Cita")
     @Enumerated(EnumType.STRING) //indicamos que es un enum de tipo STRING
     private EstadoCita estadoCita;
+
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Diagnostico> diagnosticos;
 }

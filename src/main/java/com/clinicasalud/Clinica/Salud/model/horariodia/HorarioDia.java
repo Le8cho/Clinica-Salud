@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "horarioDiaKey")
 public class HorarioDia {
 
     @EmbeddedId

@@ -1,16 +1,20 @@
 package com.clinicasalud.Clinica.Salud.model.diaatencion;
+import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
+import com.clinicasalud.Clinica.Salud.model.horariodia.HorarioDia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Table(name="Dia_Atencion")
 @Entity(name="DiaAtencion")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idDia")
 
 public class DiaAtencion {
     @Id
@@ -21,4 +25,7 @@ public class DiaAtencion {
     @Column(name = "Dia")
     @Enumerated(EnumType.STRING) //indicamos que es un enum de tipo STRING
     private DiaSemana diaSemana;
+
+    @OneToMany(mappedBy = "diaAtencion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<HorarioDia> horarioDias;
 }

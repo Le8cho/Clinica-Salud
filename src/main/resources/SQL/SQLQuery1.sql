@@ -6,10 +6,10 @@ CREATE DATABASE changoBase
 GO
 use changoBase
 GO
--- EliminaciÛn de tablas si existen
+-- Eliminaci√≥n de tablas si existen
 DROP TABLE IF EXISTS Tratamiento, Diagnostico, Apoyo_Diagnostico, Consulta, Cita, Paciente, Medico, Horario_Medico, Dia_Atencion, Usuario;
 
--- CreaciÛn de la tabla Usuario
+-- Creaci√≥n de la tabla Usuario
 CREATE TABLE Usuario (
     ID_Usuario BIGINT NOT NULL PRIMARY KEY,
 	[Username] VARCHAR(255) NOT NULL UNIQUE,
@@ -17,20 +17,20 @@ CREATE TABLE Usuario (
     Rol_Usuario VARCHAR(255) NOT NULL
 );
 
--- CreaciÛn de la tabla Dia_Atencion
+-- Creaci√≥n de la tabla Dia_Atencion
 CREATE TABLE Dia_Atencion (
     ID_Dia BIGINT NOT NULL PRIMARY KEY,
     Dia VARCHAR(50) NOT NULL UNIQUE
 );
 
--- CreaciÛn de la tabla Horario_Medico
+-- Creaci√≥n de la tabla Horario_Medico
 CREATE TABLE Horario_Medico (
     ID_Horario_Medico BIGINT NOT NULL PRIMARY KEY,
     Hora_Inicio TIME NOT NULL,
     Hora_Fin TIME NOT NULL,
 );
 
--- CreaciÛn de la tabla Horario_Dia
+-- Creaci√≥n de la tabla Horario_Dia
 CREATE TABLE Horario_Dia (
     ID_Horario_Medico BIGINT NOT NULL,
 	ID_Dia BIGINT NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE Horario_Dia (
 	FOREIGN KEY(ID_Dia) REFERENCES Dia_Atencion (ID_Dia)
 );
 
--- CreaciÛn de la tabla Medico
+-- Creaci√≥n de la tabla Medico
 CREATE TABLE Medico (
     ID_Medico BIGINT NOT NULL PRIMARY KEY,
     ID_Horario_Medico BIGINT NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE Medico (
     FOREIGN KEY (ID_Horario_Medico) REFERENCES Horario_Medico(ID_Horario_Medico)
 );
 
--- CreaciÛn de la tabla Paciente
+-- Creaci√≥n de la tabla Paciente
 CREATE TABLE Paciente (
     ID_Paciente BIGINT NOT NULL PRIMARY KEY,
     Nombres VARCHAR(255) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE Paciente (
     Estado_Paciente TINYINT NOT NULL
 );
 
--- CreaciÛn de la tabla Cita
+-- Creaci√≥n de la tabla Cita
 CREATE TABLE Cita (
     ID_Cita BIGINT NOT NULL PRIMARY KEY,
     ID_Paciente BIGINT NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE Cita (
     FOREIGN KEY (ID_Medico) REFERENCES Medico(ID_Medico)
 );
 
--- CreaciÛn de la tabla Diagnostico
+-- Creaci√≥n de la tabla Diagnostico
 CREATE TABLE Diagnostico (
     ID_Diagnostico BIGINT NOT NULL PRIMARY KEY,
     ID_Cita BIGINT NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE Diagnostico (
     FOREIGN KEY (ID_Cita) REFERENCES Cita(ID_Cita)
 );
 
--- CreaciÛn de la tabla Tratamiento
+-- Creaci√≥n de la tabla Tratamiento
 CREATE TABLE Tratamiento (
     ID_Tratamiento BIGINT NOT NULL PRIMARY KEY,
     ID_Diagnostico BIGINT NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE Tratamiento (
     FOREIGN KEY (ID_Diagnostico) REFERENCES Diagnostico(ID_Diagnostico)
 );
 
--- CreaciÛn de la tabla Apoyo_Diagnostico
+-- Creaci√≥n de la tabla Apoyo_Diagnostico
 CREATE TABLE Apoyo_Diagnostico (
     ID_Apoyo_Diagnostico BIGINT NOT NULL PRIMARY KEY,
     ID_Diagnostico BIGINT NOT NULL,
@@ -121,7 +121,7 @@ INSERT INTO Usuario (ID_Usuario, [Username] , [Password], Rol_Usuario) VALUES
 INSERT INTO Dia_Atencion (ID_Dia, Dia) VALUES
 (1, 'Lunes'),
 (2, 'Martes'),
-(3, 'MiÈrcoles'),
+(3, 'Mi√©rcoles'),
 (4, 'Jueves'),
 (5, 'Viernes');
 
@@ -133,48 +133,72 @@ INSERT INTO Horario_Medico (ID_Horario_Medico, Hora_Inicio, Hora_Fin) VALUES
 (5,'08:00', '12:00');
 
 INSERT INTO Medico (ID_Medico, ID_Horario_Medico, Nombres, Apellidos, DNI, Correo, Telefono, Sexo, Estado, Especialidad) VALUES
-(1, 1, 'Carlos', 'MÈndez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'CardiologÌa'),
-(2, 2, 'Ana', 'GarcÌa', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'DermatologÌa'),
-(3, 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'NeurologÌa'),
-(4, 4, 'Lucia', 'Fern·ndez', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'PediatrÌa'),
-(5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'GastroenterologÌa');
+(1, 1, 'Carlos', 'M√©ndez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'Cardiolog√≠a'),
+(2, 2, 'Ana', 'Garc√≠a', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'Dermatolog√≠a'),
+(3, 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'Neurolog√≠a'),
+(4, 4, 'Lucia', 'Fern√°ndez', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'Pediatr√≠a'),
+(5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'Gastroenterolog√≠a');
 
 --Mas Pacientes
 INSERT INTO Paciente (ID_Paciente, Nombres, Apellidos, DNI, Direccion, Telefono, Sexo, Fecha_Nacimiento, Estado_Paciente) VALUES
-(1, 'Juan', 'PÈrez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
-(2, 'Maria', 'LÛpez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
-(3, 'Pedro', 'MartÌnez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
+(1, 'Juan', 'P√©rez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
+(2, 'Maria', 'L√≥pez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
+(3, 'Pedro', 'Mart√≠nez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
 (4, 'Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
-(5, 'Luis', 'GÛmez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1);
-
+(5, 'Luis', 'G√≥mez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
+(6, 'Sof√≠a', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
+(7, 'Ricardo', 'Juarez', '65432109', 'Gran V√≠a 234', '234567890', 'M', '1988-07-12', 1),
+(8, 'Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
+(9, 'Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
+(10, 'Luc√≠a', 'D√≠az', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
 --Mas Citas
 INSERT INTO Cita (ID_Cita, ID_Paciente, ID_Medico, Hora_Inicio, Fecha, Motivo_Consulta, Estado_Cita) VALUES
-(1, 1, 1, '09:00', '2023-07-10', 'RevisiÛn general', 'Programada'),
-(2, 2, 2, '10:00', '2023-07-11', 'Consulta dermatolÛgica', 'Programada'),
-(3, 3, 3, '11:00', '2023-07-12', 'Consulta neurolÛgica', 'Programada'),
-(4, 4, 4, '12:00', '2023-07-13', 'Control pedi·trico', 'Programada'),
-(5, 5, 5, '08:00', '2023-07-14', 'Consulta de gastroenterologÌa', 'Programada');
+(1, 1, 1, '09:00', '2023-07-10', 'Revisi√≥n general', 'Programada'),
+(2, 2, 2, '10:00', '2023-07-11', 'Consulta dermatol√≥gica', 'Programada'),
+(3, 3, 3, '11:00', '2023-07-12', 'Consulta neurol√≥gica', 'Programada'),
+(4, 4, 4, '12:00', '2023-07-13', 'Control pedi√°trico', 'Programada'),
+(5, 5, 5, '08:00', '2023-07-14', 'Consulta de gastroenterolog√≠a', 'Programada'),
+(6, 6, 1, '14:00', '2023-07-15', 'Consulta de seguimiento', 'Programada'),
+(7, 7, 2, '15:00', '2023-07-16', 'Chequeo anual', 'Programada'),
+(8, 8, 3, '16:00', '2023-07-17', 'Evaluaci√≥n de s√≠ntomas', 'Programada'),
+(9, 9, 4, '17:00', '2023-07-18', 'Consulta prenatal', 'Programada'),
+(10, 10, 5, '09:00', '2023-07-19', 'Control de alergias', 'Programada');
 
 --Mas Diagnosticos
 INSERT INTO Diagnostico (ID_Diagnostico, ID_Cita, Descripcion, Sospecha_Diagnostica) VALUES
 (1, 1, 'No se observan problemas de salud.', 0),
-(2, 2, 'DiagnÛstico de eczema.', 1),
-(3, 3, 'Sin signos de enfermedad neurolÛgica.', 0),
+(2, 2, 'Diagn√≥stico de eczema.', 1),
+(3, 3, 'Sin signos de enfermedad neurol√≥gica.', 0),
 (4, 4, 'Desarrollo normal para la edad.', 0),
-(5, 5, 'Presencia de gastritis.', 1);
+(5, 5, 'Presencia de gastritis.', 1),
+(6, 6, 'Control de hipertensi√≥n en progreso.', 0),
+(7, 7, 'Salud general buena, recomendado ejercicio regular.', 0),
+(8, 8, 'S√≠ntomas de ansiedad, considerar terapia.', 1),
+(9, 9, 'Embarazo saludable, todos los indicadores normales.', 0),
+(10, 10, 'Alergias estacionales, prescribir antihistam√≠nicos.', 1);
 
---Mas tratamientos DuraciÛn ø0?
+--Mas tratamientos Duraci√≥n ¬ø0?
 INSERT INTO Tratamiento (ID_Tratamiento, ID_Diagnostico, Duracion, Prescripcion, Procedimiento) VALUES
-(1, 1, 0, 'Continuar con dieta saludable', 'RevisiÛn anual'),
-(2, 2, 30, 'Uso de crema tÛpica', 'Aplicar crema cada 8 horas'),
+(1, 1, 0, 'Continuar con dieta saludable', 'Revisi√≥n anual'),
+(2, 2, 30, 'Uso de crema t√≥pica', 'Aplicar crema cada 8 horas'),
 (3, 3, 0, 'No requiere tratamiento', 'Seguimiento en seis meses'),
-(4, 4, 0, 'VacunaciÛn al dÌa', 'Programar prÛxima vacunaciÛn'),
-(5, 5, 10, 'MedicaciÛn para gastritis', 'Tomar medicamento antes de las comidas');
+(4, 4, 0, 'Vacunaci√≥n al d√≠a', 'Programar pr√≥xima vacunaci√≥n'),
+(5, 5, 10, 'Medicaci√≥n para gastritis', 'Tomar medicamento antes de las comidas'),
+(6, 6, 90, 'Continuar medicaci√≥n para la presi√≥n arterial', 'Revisi√≥n en tres meses'),
+(7, 7, 0, 'Recomendaci√≥n de ejercicio', 'Chequeo anual'),
+(8, 8, 120, 'Terapia cognitiva conductual', 'Sesiones semanales'),
+(9, 9, 0, 'Suplementos de vitaminas prenatales', 'Visitas mensuales'),
+(10, 10, 30, 'Antihistam√≠nicos', 'Tomar seg√∫n sea necesario durante la temporada');
 
---M·s diagnosticos
+--M√°s diagnosticos
 INSERT INTO Apoyo_Diagnostico (ID_Apoyo_Diagnostico, ID_Diagnostico, Tipo_de_Apoyo) VALUES
 (1, 2, 'Biopsia de piel'),
-(2, 2, 'An·lisis de sangre'),
+(2, 2, 'An√°lisis de sangre'),
 (3, 5, 'Endoscopia'),
-(4, 3, 'Resonancia MagnÈtica'),
-(5, 4, 'Pruebas de audiciÛn');
+(4, 3, 'Resonancia Magn√©tica'),
+(5, 4, 'Pruebas de audici√≥n'),
+(6, 6, 'Monitoreo de presi√≥n arterial'),
+(7, 7, 'Pruebas de esfuerzo'),
+(8, 8, 'Evaluaci√≥n psicol√≥gica'),
+(9, 9, 'Ecograf√≠a'),
+(10, 10, 'Pruebas de alergia cut√°nea');

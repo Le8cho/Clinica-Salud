@@ -12,7 +12,7 @@ public class DatosPersona {
     @Column(name = "Apellidos")
     private String apellidos;
 
-    @Column(name = "Telefono")
+    @Column(name = "DNI")
     private String dni;
 
     @Column(name = "Sexo")

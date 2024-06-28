@@ -25,7 +25,7 @@ public class HorarioMedico {
     @Column(name= "Hora_Fin",nullable = false)
     private Time horaFin;
 
-    @OneToMany(mappedBy = "horarioMedico", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
-    List<HorarioDia> horarioDiaList;
+    @OneToMany(mappedBy = "horarioDiaKey.horarioMedico", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    private List<HorarioDia> horarioDiaList;
 
 }

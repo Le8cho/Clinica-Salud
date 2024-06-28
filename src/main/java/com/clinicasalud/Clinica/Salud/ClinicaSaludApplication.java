@@ -13,8 +13,11 @@ public class ClinicaSaludApplication implements CommandLineRunner {
 		SpringApplication.run(ClinicaSaludApplication.class, args);
 	}
 
+
+	//Ejecucion en Consola
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("hola soy un pollito perfeccionista que no disfruta equivocarse y tiene miedo de hacerlo mal");
+		Principal principal = new Principal();
+		principal.menu();
 	}
 }

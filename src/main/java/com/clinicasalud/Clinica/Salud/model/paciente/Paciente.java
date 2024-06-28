@@ -37,6 +37,6 @@ public class Paciente {
     private boolean estadoPaciente;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Cita> citas;
+    private List<Cita> citas;
 
 }

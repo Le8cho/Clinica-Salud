@@ -47,5 +47,5 @@ public class Cita {
     private EstadoCita estadoCita;
 
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Diagnostico> diagnosticos;
+    private List<Diagnostico> diagnosticos;
 }

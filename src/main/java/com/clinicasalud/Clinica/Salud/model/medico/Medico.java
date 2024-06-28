@@ -43,8 +43,9 @@ public class Medico {
     private Integer estado;
 
     @Column(name= "Especialidad",nullable = false)
-    private Integer especialidad;
+    @Enumerated(EnumType.STRING)
+    private Especialidad especialidad;
 
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Cita> citaList;
+    private List<Cita> citaList;
 }

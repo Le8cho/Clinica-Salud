@@ -26,6 +26,6 @@ public class DiaAtencion {
     @Enumerated(EnumType.STRING) //indicamos que es un enum de tipo STRING
     private DiaSemana diaSemana;
 
-    @OneToMany(mappedBy = "diaAtencion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<HorarioDia> horarioDias;
+    @OneToMany(mappedBy = "horarioDiaKey.diaAtencion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HorarioDia> horarioDias;
 }

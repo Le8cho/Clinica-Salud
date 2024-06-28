@@ -34,8 +34,8 @@ public class Diagnostico {
     private Boolean sopechaDiagnostica;
 
     @OneToMany(mappedBy = "diagnostico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Tratamiento> tratamientos;
+    private List<Tratamiento> tratamientos;
 
     @OneToMany(mappedBy = "diagnostico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<ApoyoDiagnostico> apoyoDiagnosticos;
+    private List<ApoyoDiagnostico> apoyoDiagnosticos;
 }

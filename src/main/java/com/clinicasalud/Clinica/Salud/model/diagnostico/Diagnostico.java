@@ -1,5 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.diagnostico;
+import com.clinicasalud.Clinica.Salud.model.apoyodiagnostico.ApoyoDiagnostico;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
+import com.clinicasalud.Clinica.Salud.model.tratamiento.Tratamiento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

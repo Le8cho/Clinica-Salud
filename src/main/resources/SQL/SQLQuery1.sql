@@ -119,11 +119,12 @@ INSERT INTO Usuario (ID_Usuario, [Username] , [Password], Rol_Usuario) VALUES
 
 --No Tocar
 INSERT INTO Dia_Atencion (ID_Dia, Dia) VALUES
-(1, 'Lunes'),
-(2, 'Martes'),
-(3, 'Miércoles'),
-(4, 'Jueves'),
-(5, 'Viernes');
+(1, 'LUNES'),
+(2, 'MARTES'),
+(3, 'MIERCOLES'),
+(4, 'JUEVES'),
+(5, 'VIERNES'),
+(6,'SABADO');
 
 INSERT INTO Horario_Medico (ID_Horario_Medico, Hora_Inicio, Hora_Fin) VALUES
 (1,'08:00', '12:00'),
@@ -132,55 +133,67 @@ INSERT INTO Horario_Medico (ID_Horario_Medico, Hora_Inicio, Hora_Fin) VALUES
 (4,'13:00', '17:00'),
 (5,'08:00', '12:00');
 
+INSERT INTO Horario_Dia(ID_Horario_Medico, ID_Dia) VALUES
+(1,1),
+(1,2),
+(1,3),
+(2,3),
+(2,4),
+(4,1),
+(5,2),
+(5,3);
+
+
 INSERT INTO Medico (ID_Medico, ID_Horario_Medico, Nombres, Apellidos, DNI, Correo, Telefono, Sexo, Estado, Especialidad) VALUES
-(1, 1, 'Carlos', 'Méndez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'Cardiología'),
-(2, 2, 'Ana', 'García', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'Dermatología'),
-(3, 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'Neurología'),
-(4, 4, 'Lucia', 'Fernández', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'Pediatría'),
-(5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'Gastroenterología');
+(1, 1, 'Carlos', 'Mendez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'CARDIOLOGIA'),
+(2, 2, 'Ana', 'Garcia', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'DERMATOLOGIA'),
+(3, 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'NEUROLOGIA'),
+(4, 4, 'Lucia', 'Fernandez', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'PEDIATRIA'),
+(5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'GASTROENTEROLOGIA');
 
 --Mas Pacientes
 INSERT INTO Paciente (ID_Paciente, Nombres, Apellidos, DNI, Direccion, Telefono, Sexo, Fecha_Nacimiento, Estado_Paciente) VALUES
-(1, 'Juan', 'Pérez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
-(2, 'Maria', 'López', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
-(3, 'Pedro', 'Martínez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
+(1, 'Juan', 'Perez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
+(2, 'Maria', 'Lopez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
+(3, 'Pedro', 'Martinez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
 (4, 'Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
-(5, 'Luis', 'Gómez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
-(6, 'Sofía', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
+(5, 'Luis', 'Gomez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
+(6, 'Sofia', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
 (7, 'Ricardo', 'Juarez', '65432109', 'Gran Vía 234', '234567890', 'M', '1988-07-12', 1),
 (8, 'Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
 (9, 'Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
-(10, 'Lucía', 'Díaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
+(10, 'Lucia', 'Diaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
+
 --Mas Citas
 INSERT INTO Cita (ID_Cita, ID_Paciente, ID_Medico, Hora_Inicio, Fecha, Motivo_Consulta, Estado_Cita) VALUES
-(1, 1, 1, '09:00', '2023-07-10', 'Revisión general', 'Programada'),
-(2, 2, 2, '10:00', '2023-07-11', 'Consulta dermatológica', 'Programada'),
-(3, 3, 3, '11:00', '2023-07-12', 'Consulta neurológica', 'Programada'),
-(4, 4, 4, '12:00', '2023-07-13', 'Control pediátrico', 'Programada'),
-(5, 5, 5, '08:00', '2023-07-14', 'Consulta de gastroenterología', 'Programada'),
+(1, 1, 1, '09:00', '2023-07-10', 'Revision general', 'Programada'),
+(2, 2, 2, '10:00', '2023-07-11', 'Consulta dermatologica', 'Programada'),
+(3, 3, 3, '11:00', '2023-07-12', 'Consulta neurologica', 'Programada'),
+(4, 4, 4, '12:00', '2023-07-13', 'Control pediatrico', 'Programada'),
+(5, 5, 5, '08:00', '2023-07-14', 'Consulta de gastroenterologia', 'Programada'),
 (6, 6, 1, '14:00', '2023-07-15', 'Consulta de seguimiento', 'Programada'),
 (7, 7, 2, '15:00', '2023-07-16', 'Chequeo anual', 'Programada'),
-(8, 8, 3, '16:00', '2023-07-17', 'Evaluación de síntomas', 'Programada'),
+(8, 8, 3, '16:00', '2023-07-17', 'Evaluacion de sintomas', 'Programada'),
 (9, 9, 4, '17:00', '2023-07-18', 'Consulta prenatal', 'Programada'),
 (10, 10, 5, '09:00', '2023-07-19', 'Control de alergias', 'Programada');
 
 --Mas Diagnosticos
 INSERT INTO Diagnostico (ID_Diagnostico, ID_Cita, Descripcion, Sospecha_Diagnostica) VALUES
 (1, 1, 'No se observan problemas de salud.', 0),
-(2, 2, 'Diagnóstico de eczema.', 1),
-(3, 3, 'Sin signos de enfermedad neurológica.', 0),
+(2, 2, 'Diagnostico de eczema.', 1),
+(3, 3, 'Sin signos de enfermedad neurologica.', 0),
 (4, 4, 'Desarrollo normal para la edad.', 0),
 (5, 5, 'Presencia de gastritis.', 1),
-(6, 6, 'Control de hipertensión en progreso.', 0),
+(6, 6, 'Control de hipertension en progreso.', 0),
 (7, 7, 'Salud general buena, recomendado ejercicio regular.', 0),
-(8, 8, 'Síntomas de ansiedad, considerar terapia.', 1),
+(8, 8, 'Sintomas de ansiedad, considerar terapia.', 1),
 (9, 9, 'Embarazo saludable, todos los indicadores normales.', 0),
-(10, 10, 'Alergias estacionales, prescribir antihistamínicos.', 1);
+(10, 10, 'Alergias estacionales, prescribir antihistaminicos.', 1);
 
 --Mas tratamientos Duración ¿0?
 INSERT INTO Tratamiento (ID_Tratamiento, ID_Diagnostico, Duracion, Prescripcion, Procedimiento) VALUES
-(1, 1, 0, 'Continuar con dieta saludable', 'Revisión anual'),
-(2, 2, 30, 'Uso de crema tópica', 'Aplicar crema cada 8 horas'),
+(1, 1, 0, 'Continuar con dieta saludable', 'Revision anual'),
+(2, 2, 30, 'Uso de crema topica', 'Aplicar crema cada 8 horas'),
 (3, 3, 0, 'No requiere tratamiento', 'Seguimiento en seis meses'),
 (4, 4, 0, 'Vacunación al día', 'Programar próxima vacunación'),
 (5, 5, 10, 'Medicación para gastritis', 'Tomar medicamento antes de las comidas'),

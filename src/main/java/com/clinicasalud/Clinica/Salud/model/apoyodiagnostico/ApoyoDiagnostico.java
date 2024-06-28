@@ -17,9 +17,9 @@ public class ApoyoDiagnostico {
     @Column(name= "ID_Apoyo_Diagnostico", nullable = false)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="ID_Diagnostico", nullable = false)
-    private Diagnostico idDiagnostico;
+    private Diagnostico diagnostico;
 
     @Column(name= "Tipo_de_Apoyo")
     private String tipoDeApoyo;

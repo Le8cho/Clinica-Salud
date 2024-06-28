@@ -15,6 +15,6 @@ public class ClinicaSaludApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
+		System.out.println("hola soy un pollito perfeccionista que no disfruta equivocarse y tiene miedo de hacerlo mal");
 	}
 }

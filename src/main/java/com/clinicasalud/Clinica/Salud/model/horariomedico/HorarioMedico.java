@@ -1,9 +1,11 @@
 package com.clinicasalud.Clinica.Salud.model.horariomedico;
 
+import com.clinicasalud.Clinica.Salud.model.horariodia.HorarioDia;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +24,8 @@ public class HorarioMedico {
     private Time horaInicio;
     @Column(name= "Hora_Fin",nullable = false)
     private Time horaFin;
+
+    @OneToMany(mappedBy = "horarioMedico", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    List<HorarioDia> horarioDiaList;
+
 }

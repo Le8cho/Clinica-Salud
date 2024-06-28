@@ -1,6 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.horariodia;
 
 import com.clinicasalud.Clinica.Salud.model.diaatencion.DiaAtencion;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
 import jakarta.persistence.*;
 
 @Embeddable

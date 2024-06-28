@@ -1,8 +1,11 @@
 package com.clinicasalud.Clinica.Salud.model.medico;
 
+import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +20,7 @@ public class Medico {
     @Column(name= "ID_Medico", nullable = false)
     private Long id;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "ID_Horario_Medico")
     private HorarioMedico idHorarioMedico;
 
@@ -41,4 +44,7 @@ public class Medico {
 
     @Column(name= "Especialidad",nullable = false)
     private Integer especialidad;
+
+    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Cita> citaList;
 }

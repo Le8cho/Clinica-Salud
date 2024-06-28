@@ -19,7 +19,7 @@ public class Tratamiento {
 
     @ManyToOne
     @JoinColumn(name="ID_Diagnostico", nullable = false)
-    private Diagnostico idDiagnostico;
+    private Diagnostico diagnostico;
 
     @Column(name= "Duracion")
     private Integer duracion;

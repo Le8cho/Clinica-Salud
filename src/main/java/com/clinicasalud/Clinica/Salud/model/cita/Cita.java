@@ -1,6 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
 import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
+import com.clinicasalud.Clinica.Salud.model.medico.Medico;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,11 +25,11 @@ public class Cita {
     @Column(name="ID_Cita")
     private Long idCita;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Paciente") //join column == el nombre de la foreign key en la tabla
     private Paciente paciente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Medico")
     private Medico medico;
 

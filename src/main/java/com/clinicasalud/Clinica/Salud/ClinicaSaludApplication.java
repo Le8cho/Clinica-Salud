@@ -1,23 +1,17 @@
 package com.clinicasalud.Clinica.Salud;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Scanner;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class ClinicaSaludApplication implements CommandLineRunner {
+public class ClinicaSaludApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClinicaSaludApplication.class, args);
-	}
+		ApplicationContext context = SpringApplication.run(ClinicaSaludApplication.class, args);
 
-
-	//Ejecucion en Consola
-	@Override
-	public void run(String... args) throws Exception {
-		Principal principal = new Principal();
+		// Iniciar el menú principal
+		Principal principal = context.getBean(Principal.class);
 		principal.menu();
 	}
 }

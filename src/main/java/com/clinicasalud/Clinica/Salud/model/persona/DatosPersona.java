@@ -2,8 +2,14 @@ package com.clinicasalud.Clinica.Salud.model.persona;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
+@Getter
+@NoArgsConstructor
 public class DatosPersona {
 
     @Column(name = "Nombres")
@@ -20,4 +26,12 @@ public class DatosPersona {
 
     @Column(name = "Telefono")
     private String telefono;
+
+    public DatosPersona(String nombresPac, String apellidosPac, String dniPac, char sexoPac, String tlfPac) {
+        this.nombres = nombresPac;
+        this.apellidos = apellidosPac;
+        this.dni = dniPac;
+        this.sexo = sexoPac;
+        this.telefono = tlfPac;
+    }
 }

@@ -56,7 +56,7 @@ CREATE TABLE Medico (
 
 -- Creación de la tabla Paciente
 CREATE TABLE Paciente (
-    ID_Paciente BIGINT NOT NULL PRIMARY KEY,
+    ID_Paciente BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     Nombres VARCHAR(255) NOT NULL,
     Apellidos VARCHAR(255) NOT NULL,
     DNI CHAR(8) NOT NULL UNIQUE,
@@ -152,17 +152,17 @@ INSERT INTO Medico (ID_Medico, ID_Horario_Medico, Nombres, Apellidos, DNI, Corre
 (5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'GASTROENTEROLOGIA');
 
 --Mas Pacientes
-INSERT INTO Paciente (ID_Paciente, Nombres, Apellidos, DNI, Direccion, Telefono, Sexo, Fecha_Nacimiento, Estado_Paciente) VALUES
-(1, 'Juan', 'Perez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
-(2, 'Maria', 'Lopez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
-(3, 'Pedro', 'Martinez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
-(4, 'Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
-(5, 'Luis', 'Gomez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
-(6, 'Sofia', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
-(7, 'Ricardo', 'Juarez', '65432109', 'Gran Vía 234', '234567890', 'M', '1988-07-12', 1),
-(8, 'Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
-(9, 'Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
-(10, 'Lucia', 'Diaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
+INSERT INTO Paciente (Nombres, Apellidos, DNI, Direccion, Telefono, Sexo, Fecha_Nacimiento, Estado_Paciente) VALUES
+('Juan', 'Perez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
+('Maria', 'Lopez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
+('Pedro', 'Martinez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
+('Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
+('Luis', 'Gomez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
+('Sofia', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
+('Ricardo', 'Juarez', '65432109', 'Gran Vía 234', '234567890', 'M', '1988-07-12', 1),
+('Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
+('Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
+('Lucia', 'Diaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
 
 --Mas Citas
 INSERT INTO Cita (ID_Cita, ID_Paciente, ID_Medico, Hora_Inicio, Fecha, Motivo_Consulta, Estado_Cita) VALUES

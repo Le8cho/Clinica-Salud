@@ -1,9 +1,19 @@
 package com.clinicasalud.Clinica.Salud;
 
+import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
+
 import java.util.Scanner;
 
 public class Principal {
+
+    private PacienteRepository pacienteRepository;
+
     private Scanner input = new Scanner(System.in);
+
+    public Principal(PacienteRepository pacienteRepository){
+        this.pacienteRepository = pacienteRepository;
+    }
 
     public void menu() {
         System.out.println("Hola");
@@ -42,7 +52,7 @@ public class Principal {
                 nada();
             }
             case 3->{
-                nada();
+                consultarDatosNuevoPaciente();
             }
             case 4->{
                 nada();
@@ -69,4 +79,26 @@ public class Principal {
     public void nada(){
         System.out.println("nada");
     }
+
+    //Registrar Paciente
+    public void consultarDatosNuevoPaciente(){
+        System.out.println("Ingresar Numero de DNI por favor:");
+        var dniPac = input.nextLine();
+        System.out.println("Ingresar Nombres por favor:");
+        var nombresPac = input.nextLine();
+        System.out.println("Ingresar apellidos por favor:");
+        var apellidosPac = input.nextLine();
+        System.out.println("Ingresar Sexo (M/F) por favor:");
+        var sexoPac = input.nextLine().toUpperCase().charAt(0);
+        System.out.println("Ingresar Numero de Telefono por favor:");
+        var tlfPac = input.nextLine();
+        System.out.println("Ingresar direccion por favor:");
+        var direccion = input.nextLine();
+        System.out.println("Ingresar Fecha de Nacimiento (AAAA-MM-DD) por favor:");
+        var fechaNacPac = input.nextLine();
+
+        pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
+
+    }
+
 }

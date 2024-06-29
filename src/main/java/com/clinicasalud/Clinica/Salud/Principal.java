@@ -1,18 +1,23 @@
 package com.clinicasalud.Clinica.Salud;
 
+import com.clinicasalud.Clinica.Salud.model.paciente.DatosCrearPaciente;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Principal {
 
     private PacienteRepository pacienteRepository;
+    private PacienteService pacienteService;
 
     private Scanner input = new Scanner(System.in);
 
-    public Principal(PacienteRepository pacienteRepository){
+    public Principal(PacienteRepository pacienteRepository, PacienteService pacienteService){
         this.pacienteRepository = pacienteRepository;
+        this.pacienteService = pacienteService;
     }
 
     public void menu() {
@@ -82,22 +87,38 @@ public class Principal {
 
     //Registrar Paciente
     public void consultarDatosNuevoPaciente(){
-        System.out.println("Ingresar Numero de DNI por favor:");
-        var dniPac = input.nextLine();
         System.out.println("Ingresar Nombres por favor:");
         var nombresPac = input.nextLine();
         System.out.println("Ingresar apellidos por favor:");
         var apellidosPac = input.nextLine();
+        System.out.println("Ingresar Numero de DNI por favor:");
+        var dniPac = input.nextLine();
         System.out.println("Ingresar Sexo (M/F) por favor:");
-        var sexoPac = input.nextLine().toUpperCase().charAt(0);
+        var sexoPac = input.nextLine().toUpperCase();
         System.out.println("Ingresar Numero de Telefono por favor:");
         var tlfPac = input.nextLine();
         System.out.println("Ingresar direccion por favor:");
         var direccion = input.nextLine();
         System.out.println("Ingresar Fecha de Nacimiento (AAAA-MM-DD) por favor:");
-        var fechaNacPac = input.nextLine();
+        var fechaNacPac = LocalDate.parse(input.nextLine());
 
-        pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
+        //Validamos los campos ingresado ajuajuaayyyy
+        DatosCrearPaciente datosCrearPaciente = new DatosCrearPaciente(
+                nombresPac,
+                apellidosPac,
+                dniPac,
+                sexoPac,
+                tlfPac,
+                direccion,
+                fechaNacPac
+        );
+
+
+        Paciente paciente = pacienteService.validarDatos(datosCrearPaciente);
+
+        System.out.println(paciente);
+
+        //pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
 
     }
 

@@ -1,6 +1,7 @@
 package com.clinicasalud.Clinica.Salud;
 
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,10 +19,13 @@ public class ClinicaSaludApplication implements CommandLineRunner {
 	@Autowired
 	private PacienteRepository pacienteRepository;
 
+	@Autowired
+	private PacienteService pacienteService;
+
 	//Ejecucion en Consola
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal(pacienteRepository);
+		Principal principal = new Principal(pacienteRepository, pacienteService);
 		principal.menu();
 	}
 }

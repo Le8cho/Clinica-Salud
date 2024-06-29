@@ -1,7 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.paciente;
 
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
-import com.clinicasalud.Clinica.Salud.model.persona.DatosPersona;
+import com.clinicasalud.Clinica.Salud.model.persona.Persona;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name="Paciente")
@@ -25,7 +24,7 @@ public class Paciente {
     private Long idPaciente;
 
     @Embedded
-    private DatosPersona datosPersona;
+    private Persona persona;
 
     @Column(name = "Direccion")
     private String direccion;
@@ -39,13 +38,27 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cita> citas;
 
-    public Paciente(
-            String nombresPac, String apellidosPac, String dniPac, char sexoPac, String tlfPac, String direccion,
-            String fechaNacPac
-    ) {
-        this.datosPersona = new DatosPersona(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac);
-        this.direccion = direccion;
-        this.fechaNacimiento = LocalDate.parse(fechaNacPac);
+    public Paciente(DatosCrearPaciente datosCrearPaciente) {
+        this.persona = new Persona(
+                datosCrearPaciente.datosPersona().nombres(),
+                datosCrearPaciente.datosPersona().apellidos(),
+                datosCrearPaciente.datosPersona().dni(),
+                datosCrearPaciente.datosPersona().sexo(),
+                datosCrearPaciente.datosPersona().telefono()
+        );
+        this.direccion = datosCrearPaciente.direccion();
+        this.fechaNacimiento = datosCrearPaciente.fechaNacimiento();
         this.estadoPaciente = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "idPaciente=" + idPaciente +
+                "\npersona=" + persona +
+                "\ndireccion='" + direccion + '\'' +
+                "\nfechaNacimiento=" + fechaNacimiento +
+                "\nestadoPaciente=" + estadoPaciente +
+                '}';
     }
 }

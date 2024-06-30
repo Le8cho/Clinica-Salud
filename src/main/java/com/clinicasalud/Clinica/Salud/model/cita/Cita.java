@@ -4,12 +4,11 @@ import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
 import com.clinicasalud.Clinica.Salud.model.medico.Medico;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Table(name="Cita")
@@ -17,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode(of = "idCita")
 
 public class Cita {
@@ -34,10 +34,10 @@ public class Cita {
     private Medico medico;
 
     @Column(name = "Hora_Inicio")
-    private LocalDateTime horaInicio;
+    private LocalTime horaInicio;
 
     @Column(name = "Fecha")
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @Column(name= "Motivo_Consulta")
     private String motivoConsulta;

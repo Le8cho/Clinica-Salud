@@ -1,30 +1,30 @@
 package com.clinicasalud.Clinica.Salud;
-
-import java.sql.*;
+import com.clinicasalud.Clinica.Salud.model.cita.Cita;
+import com.clinicasalud.Clinica.Salud.model.cita.CitaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Principal {
+@Component
+public class Principal implements CommandLineRunner {
+
     private final Scanner input = new Scanner(System.in);
 
-    // Conexión a la base de datos
-    private Connection connect() {
-        // URL de conexión a la base de datos
-        String url = "jdbc:mysql://localhost:3306/clinica_salud";
-        String user = "root";
-        String password = "root";
-        
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
+    @Autowired
+    private CitaService citaService;
+
+    public void run(String... args) {
+        menu();
     }
 
     public void menu() {
         System.out.println("Hola");
-        int opcion = 0;
+        int opcion;
         do {
             menuOpciones();
             opcion = input.nextInt();
@@ -40,9 +40,9 @@ public class Principal {
                 2.- Registrar horario de médico
                 3.- Registrar Paciente
                 4.- Registrar cita
-                5.- Modificar cita
+                5.- Modificar/cancelar cita
                 6.- Obtener reporte de citas
-                7. Obtener citas programadas
+                7.- Obtener citas programadas
                 8.- Obtener citas por paciente
                 0.- Saliste del Sistema, lo lamento papu
                 """);
@@ -51,107 +51,103 @@ public class Principal {
 
     public void evaluandoOpcion(int opcion) {
         switch (opcion) {
-            case 1 -> nada();
-            case 2 -> nada();
-            case 3 -> nada();
-            case 4 -> nada();
-            case 5 -> { //FABRIZIO
-                //EXPLICACIÓN:
-                /*Solicita el DNI del paciente.
-                  Consulta y muestra las citas del paciente.
-                  Permite seleccionar una cita para modificar y elegir entre postergar o cancelar.
-                  Actualiza la cita en la base de datos según la elección del usuario.*/
-                System.out.print("Ingrese el DNI del paciente: ");
-                String dni = input.nextLine();
+            case 1, 2, 3, 4, 6, 7 -> nada(); // Funcionalidades aún no implementadas
+            case 5 -> {
+                System.out.println("1.- Modificar cita");
+                System.out.println("2.- Cancelar cita");
+                System.out.print("Seleccione una opción: ");
+                int subOpcion = input.nextInt();
+                input.skip("\n");
 
-                try (Connection conn = connect()) {
-                    String query = "SELECT id, fecha_hora, profesional, estado FROM citas WHERE dni_paciente = ?";
-                    PreparedStatement pstmt = conn.prepareStatement(query);
-                    pstmt.setString(1, dni);
-                    ResultSet rs = pstmt.executeQuery();
-
-                    if (!rs.next()) {
-                        System.out.println("No se encontraron citas para este paciente.");
-                        return;
-                    }
-
-                    do {
-                        System.out.println("ID Cita: " + rs.getInt("id") + ", Fecha y Hora: " + rs.getTimestamp("fecha_hora") +
-                                ", Profesional: " + rs.getString("profesional") + ", Estado: " + rs.getString("estado"));
-                    } while (rs.next());
-
-                    System.out.print("Ingrese el ID de la cita a modificar: ");
-                    int idCita = input.nextInt();
-                    input.skip("\n");
-
-                    System.out.println("Seleccione la acción a realizar: ");
-                    System.out.println("1. Postergar Cita");
-                    System.out.println("2. Cancelar Cita");
-                    int accion = input.nextInt();
-                    input.skip("\n");
-
-                    if (accion == 1) {
-                        System.out.print("Ingrese la nueva fecha y hora (YYYY-MM-DD HH:MM:SS): ");
-                        String nuevaFechaHora = input.nextLine();
-                        String updateQuery = "UPDATE citas SET fecha_hora = ? WHERE id = ?";
-                        PreparedStatement updatePstmt = conn.prepareStatement(updateQuery);
-                        updatePstmt.setTimestamp(1, Timestamp.valueOf(nuevaFechaHora));
-                        updatePstmt.setInt(2, idCita);
-                        updatePstmt.executeUpdate();
-                        System.out.println("Cita postergada exitosamente.");
-                    } else if (accion == 2) {
-                        String updateQuery = "UPDATE citas SET estado = 'Cancelada' WHERE id = ?";
-                        PreparedStatement updatePstmt = conn.prepareStatement(updateQuery);
-                        updatePstmt.setInt(1, idCita);
-                        updatePstmt.executeUpdate();
-                        System.out.println("Cita cancelada exitosamente.");
-                    } else {
-                        System.out.println("Acción inválida.");
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                switch (subOpcion) {
+                    case 1 -> modificarCita();
+                    case 2 -> cancelarCita();
+                    default -> System.out.println("Opción inválida.");
                 }
             }
-            case 6 -> nada();
-            case 7 -> nada();
-            case 8 -> { //FABRIZIO
-                //EXPLICACION:
-                /*Solicita el DNI del paciente.
-                  Consulta y muestra las citas del paciente con detalles como fecha y hora, profesional, especialidad y estado.*/
-                System.out.print("Ingrese el DNI del paciente: ");
-                String dni = input.nextLine();
+            case 8 -> {
+                System.out.print("Ingrese el ID del paciente: ");
+                Long idPaciente = input.nextLong();
+                input.nextLine(); // Consumir el salto de línea
 
-                try (Connection conn = connect()) {
-                    String query = "SELECT fecha_hora, profesional, especialidad, estado FROM citas WHERE dni_paciente = ?";
-                    PreparedStatement pstmt = conn.prepareStatement(query);
-                    pstmt.setString(1, dni);
-                    ResultSet rs = pstmt.executeQuery();
-
-                    if (!rs.next()) {
-                        System.out.println("No se encontraron citas para este paciente.");
-                        return;
-                    }
-
-                    do {
-                        System.out.println("Fecha y Hora: " + rs.getTimestamp("fecha_hora") +
-                                ", Profesional: " + rs.getString("profesional") + ", Especialidad: " + rs.getString("especialidad") +
-                                ", Estado: " + rs.getString("estado"));
-                    } while (rs.next());
-
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println("Citas del paciente con ID " + idPaciente + ":");
+                citaService.obtenerCitasPorPaciente(idPaciente).forEach(System.out::println);
             }
-            default -> nada();
+            case 0 -> System.out.println("Saliste papu");
+            default -> System.out.println("Opción no válida.");
+        }
+    }
+
+    public void modificarCita() {
+        System.out.print("Ingrese el ID de la cita a modificar: ");
+        Long idCita = input.nextLong();
+        input.nextLine(); // Consumir el salto de línea
+
+        System.out.print("Ingrese la nueva fecha (YYYY-MM-DD): ");
+        String nuevaFecha = input.nextLine();
+
+        System.out.print("Ingrese la nueva hora (HH:MM): ");
+        String nuevaHora = input.nextLine();
+
+        if (!validarFecha(nuevaFecha)) {
+            System.out.println("Fecha inválida.");
+            return;
+        }
+
+        if (!validarHora(nuevaHora)) {
+            System.out.println("Hora inválida.");
+            return;
+        }
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaIngresada = LocalDate.parse(nuevaFecha, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        if (fechaIngresada.isBefore(fechaActual)) {
+            System.out.println("No se puede programar una cita en fechas anteriores a la actual.");
+            return;
+        }
+
+        Cita cita = citaService.modificarCita(idCita, nuevaFecha, nuevaHora);
+        if (cita != null) {
+            System.out.println("Cita modificada exitosamente: " + cita);
+        } else {
+            System.out.println("No se encontró una cita con ID " + idCita);
+        }
+    }
+
+    public void cancelarCita() {
+        System.out.print("Ingrese el ID de la cita a cancelar: ");
+        Long idCita = input.nextLong();
+        input.nextLine(); // Consumir el salto de línea
+
+        System.out.print("¿Está seguro de cancelar esta cita? (S/N): ");
+        String confirmacion = input.nextLine();
+
+        if (confirmacion.equalsIgnoreCase("S")) {
+            boolean cancelada = citaService.cancelarCita(idCita);
+            if (cancelada) {
+                System.out.println("Cita cancelada correctamente.");
+            } else {
+                System.out.println("No se encontró una cita con ID " + idCita);
+            }
+        } else {
+            System.out.println("Operación cancelada por el usuario.");
         }
     }
 
     public void nada() {
-        System.out.println("nada");
+        System.out.println("La opción no está habilitada");
     }
 
-    public static void main(String[] args) {
-        new Principal().menu();
+    public boolean validarFecha(String fecha) {
+        Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+        Matcher matcher = pattern.matcher(fecha);
+        return matcher.matches();
+    }
+
+    public boolean validarHora(String hora) {
+        Pattern pattern = Pattern.compile("\\d{2}:\\d{2}");
+        Matcher matcher = pattern.matcher(hora);
+        return matcher.matches();
     }
 }

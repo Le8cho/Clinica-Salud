@@ -126,7 +126,7 @@ public class Principal {
                 imprimirReporte(citas);
             }
             case 3 -> {
-                System.out.println("Ingrese el estado de la cita (RESERVADO, ATENDIDO, CANCELADO): ");
+                System.out.println("Ingrese el estado de la cita (Programada, Atendida, Cancelada): ");
                 String estadoStr = input.nextLine();
                 System.out.println("Estado ingresado: " + estadoStr); // Añadir esta línea
                 EstadoCita estado = EstadoCita.valueOf(estadoStr);

@@ -83,7 +83,46 @@ public class Principal {
     }
 
     public void registrarHorarioMedico() {
-        System.out.println("Funcionalidad de registrar horario de médico no implementada.");
+
+        boolean continuar = true;
+        while (continuar) {
+            System.out.println("Ingrese el horario del médico:");
+            LocalTime horadeInicio = leerHora("Hora de inicio (HH:MM): ");
+            LocalTime horaFin = leerHora("Hora de fin (HH:MM): ");
+
+            if (horadeInicio != null && horaFin != null) {
+                if (horadeInicio.isBefore(horaFin)) {
+                    HorarioMedico horarioMedico = new HorarioMedico();
+                    horarioMedico.setHoraInicio(Time.valueOf(horadeInicio));
+                    horarioMedico.setHoraFin(Time.valueOf(horaFin));
+
+                    horarioMedicoJpaService.save(horarioMedico);
+                    System.out.println("Horario del médico registrado exitosamente.");
+                } else {
+                    System.out.println("La hora de inicio debe ser anterior a la hora de fin.");
+                }
+            }
+
+            System.out.print("¿Desea registrar otro horario? (S/N): ");
+            String respuesta = input.nextLine().trim().toUpperCase();
+            continuar = respuesta.equals("S");
+        }
+    }
+
+    private LocalTime leerHora(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String horaStr = input.nextLine();
+            try {
+                return LocalTime.parse(horaStr);
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato de hora inválido. Use el formato HH:MM.");
+            }
+        }
+    }
+
+    public void registrarPaciente() {
+        System.out.println("Funcionalidad de registrar paciente no implementada.");
     }
 
     public void registrarCita() {

@@ -9,7 +9,6 @@ import com.clinicasalud.Clinica.Salud.service.CitaService;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.cita.EstadoCita;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.hibernate.Hibernate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -85,10 +84,6 @@ public class Principal {
 
     public void registrarHorarioMedico() {
         System.out.println("Funcionalidad de registrar horario de médico no implementada.");
-    }
-
-    public void registrarPaciente() {
-        System.out.println("Funcionalidad de registrar paciente no implementada.");
     }
 
     public void registrarCita() {

@@ -1,16 +1,14 @@
 package com.clinicasalud.Clinica.Salud;
 
+
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Scanner;
 
 @SpringBootApplication
-public class ClinicaSaludApplication implements CommandLineRunner {
+public class ClinicaSaludApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClinicaSaludApplication.class, args);

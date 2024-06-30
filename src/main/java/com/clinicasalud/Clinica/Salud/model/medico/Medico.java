@@ -37,7 +37,7 @@ public class Medico {
     private String telefono;
 
     @Column(name= "Sexo",length = 1)
-    private String sexo;
+    private char sexo;
 
     @Column(name= "Estado",nullable = false)
     private Integer estado;
@@ -48,4 +48,7 @@ public class Medico {
 
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cita> citaList;
+
+    public void setHorarioMedico(HorarioMedico horario) {
+    }
 }

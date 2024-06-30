@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table(name = "Medico")
+@Table(name = "Horario_Medico")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -17,15 +17,15 @@ import java.util.List;
 public class HorarioMedico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "ID_Horario_Medico", nullable = false)
+    @Column(name = "ID_Horario_Medico", nullable = false)
     private Long id;
 
-    @Column(name= "Hora_Inicio",nullable = false)
+    @Column(name = "Hora_Inicio", nullable = false)
     private Time horaInicio;
-    @Column(name= "Hora_Fin",nullable = false)
+
+    @Column(name = "Hora_Fin", nullable = false)
     private Time horaFin;
 
-    @OneToMany(mappedBy = "horarioDiaKey.horarioMedico", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    @OneToMany(mappedBy = "horarioDiaKey.horarioMedico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HorarioDia> horarioDiaList;
-
 }

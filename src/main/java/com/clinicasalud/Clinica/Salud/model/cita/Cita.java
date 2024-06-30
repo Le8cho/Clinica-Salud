@@ -18,18 +18,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "idCita")
-
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_Cita")
     private Long idCita;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Paciente") //join column == el nombre de la foreign key en la tabla
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_Paciente")
     private Paciente paciente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_Medico")
     private Medico medico;
 
@@ -43,7 +42,7 @@ public class Cita {
     private String motivoConsulta;
 
     @Column(name = "Estado_Cita")
-    @Enumerated(EnumType.STRING) //indicamos que es un enum de tipo STRING
+    @Enumerated(EnumType.STRING)
     private EstadoCita estadoCita;
 
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

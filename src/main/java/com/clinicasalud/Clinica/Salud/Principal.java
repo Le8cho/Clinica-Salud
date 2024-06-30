@@ -72,13 +72,13 @@ public class Principal {
         boolean continuar = true;
         while (continuar) {
             System.out.println("Ingrese el horario del médico:");
-            LocalTime horaInicio = leerHora("Hora de inicio (HH:MM): ");
+            LocalTime horadeInicio = leerHora("Hora de inicio (HH:MM): ");
             LocalTime horaFin = leerHora("Hora de fin (HH:MM): ");
 
-            if (horaInicio != null && horaFin != null) {
-                if (horaInicio.isBefore(horaFin)) {
+            if (horadeInicio != null && horaFin != null) {
+                if (horadeInicio.isBefore(horaFin)) {
                     HorarioMedico horarioMedico = new HorarioMedico();
-                    horarioMedico.setHoraInicio(Time.valueOf(horaInicio));
+                    horarioMedico.setHoraInicio(Time.valueOf(horadeInicio));
                     horarioMedico.setHoraFin(Time.valueOf(horaFin));
 
                     horarioMedicoJpaService.save(horarioMedico);
@@ -130,3 +130,4 @@ public class Principal {
         System.out.println("Funcionalidad de obtener citas por paciente no implementada.");
     }
 }
+//gampi

@@ -1,24 +1,36 @@
 package com.clinicasalud.Clinica.Salud;
 
+import com.clinicasalud.Clinica.Salud.model.paciente.DatosCrearPaciente;
+import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
+import java.time.LocalDate;
 import com.clinicasalud.Clinica.Salud.service.CitaService;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.cita.EstadoCita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.hibernate.Hibernate;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-@Component
 public class Principal {
 
+
+    private PacienteRepository pacienteRepository;
+    private PacienteService pacienteService;
     @Autowired
     private CitaService citaService;
 
     private final Scanner input = new Scanner(System.in);
+
+
+    public Principal(PacienteRepository pacienteRepository, PacienteService pacienteService){
+        this.pacienteRepository = pacienteRepository;
+        this.pacienteService = pacienteService;
+    }
 
     public void menu() {
         System.out.println("Bienvenido al sistema de gestión de la Clínica de Salud");
@@ -55,7 +67,7 @@ public class Principal {
         switch (opcion) {
             case 1 -> registrarMedico();
             case 2 -> registrarHorarioMedico();
-            case 3 -> registrarPaciente();
+            case 3 -> consultarDatosNuevoPaciente();
             case 4 -> registrarCita();
             case 5 -> modificarCita();
             case 6 -> obtenerReporteCitas();
@@ -65,6 +77,7 @@ public class Principal {
             default -> System.out.println("Opción no válida. Intente de nuevo.");
         }
     }
+
 
     public void registrarMedico() {
         System.out.println("Funcionalidad de registrar médico no implementada.");
@@ -155,4 +168,42 @@ public class Principal {
             }
         }
     }
+
+    //Registrar Paciente
+    public void consultarDatosNuevoPaciente(){
+        System.out.println("Ingresar Nombres por favor:");
+        var nombresPac = input.nextLine();
+        System.out.println("Ingresar apellidos por favor:");
+        var apellidosPac = input.nextLine();
+        System.out.println("Ingresar Numero de DNI por favor:");
+        var dniPac = input.nextLine();
+        System.out.println("Ingresar Sexo (M/F) por favor:");
+        var sexoPac = input.nextLine().toUpperCase();
+        System.out.println("Ingresar Numero de Telefono por favor:");
+        var tlfPac = input.nextLine();
+        System.out.println("Ingresar direccion por favor:");
+        var direccion = input.nextLine();
+        System.out.println("Ingresar Fecha de Nacimiento (AAAA-MM-DD) por favor:");
+        var fechaNacPac = LocalDate.parse(input.nextLine());
+
+        //Validamos los campos ingresado 
+        DatosCrearPaciente datosCrearPaciente = new DatosCrearPaciente(
+                nombresPac,
+                apellidosPac,
+                dniPac,
+                sexoPac,
+                tlfPac,
+                direccion,
+                fechaNacPac
+        );
+
+
+        Paciente paciente = pacienteService.validarDatos(datosCrearPaciente);
+
+        System.out.println(paciente);
+
+        //pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
+
+    }
+
 }

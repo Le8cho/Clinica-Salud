@@ -1,9 +1,13 @@
 package com.clinicasalud.Clinica.Salud;
 
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoJpaService;
 import com.clinicasalud.Clinica.Salud.model.paciente.DatosCrearPaciente;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
 import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
+
+import java.sql.Time;
 import java.time.LocalDate;
 import com.clinicasalud.Clinica.Salud.service.CitaService;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
@@ -11,7 +15,9 @@ import com.clinicasalud.Clinica.Salud.model.cita.EstadoCita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.Hibernate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,6 +31,9 @@ public class Principal {
   
     @Autowired
     private CitaService citaService;
+
+    @Autowired
+    private HorarioMedicoJpaService horarioMedicoJpaService;
 
     private final Scanner input = new Scanner(System.in);
 
@@ -125,9 +134,6 @@ public class Principal {
         }
     }
 
-    public void registrarPaciente() {
-        System.out.println("Funcionalidad de registrar paciente no implementada.");
-    }
 
     public void registrarCita() {
         System.out.println("Funcionalidad de registrar cita no implementada.");
@@ -221,7 +227,12 @@ public class Principal {
     }
 
     public void obtenerCitasPorPaciente() {
-        System.out.println("Funcionalidad de obtener citas por paciente no implementada.");
+        System.out.print("Ingrese el ID del paciente: ");
+        Long idPaciente = input.nextLong();
+        input.nextLine(); // Consumir el salto de línea
+
+        System.out.println("Citas del paciente con ID " + idPaciente + ":");
+        citaService.obtenerCitasPorPaciente(idPaciente).forEach(System.out::println);
     }
 
     public void obtenerReporteCitas() {
@@ -288,7 +299,7 @@ public class Principal {
     }
 
     //Registrar Paciente
-    public void consultarDatosNuevoPaciente(){
+    public void consultarDatosNuevoPaciente() {
         System.out.println("Ingresar Nombres por favor:");
         var nombresPac = input.nextLine();
         System.out.println("Ingresar apellidos por favor:");
@@ -315,11 +326,8 @@ public class Principal {
                 fechaNacPac
         );
 
-
         Paciente paciente = pacienteService.validarDatos(datosCrearPaciente);
 
-        System.out.println(paciente);
-
-        //pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
+        pacienteRepository.save(paciente);
     }
 }

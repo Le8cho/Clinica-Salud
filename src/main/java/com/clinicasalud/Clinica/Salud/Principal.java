@@ -14,12 +14,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class Principal {
 
-
     private PacienteRepository pacienteRepository;
     private PacienteService pacienteService;
+  
     @Autowired
     private CitaService citaService;
 
@@ -33,6 +36,7 @@ public class Principal {
 
     public void menu() {
         System.out.println("Bienvenido al sistema de gestión de la Clínica de Salud");
+
         int opcion;
         do {
             menuOpciones();
@@ -53,7 +57,7 @@ public class Principal {
                 2.- Registrar horario de médico
                 3.- Registrar Paciente
                 4.- Registrar cita
-                5.- Modificar cita
+                5.- Modificar/cancelar cita
                 6.- Obtener reporte de citas
                 7.- Obtener citas programadas
                 8.- Obtener citas por paciente
@@ -68,7 +72,7 @@ public class Principal {
             case 2 -> registrarHorarioMedico();
             case 3 -> consultarDatosNuevoPaciente();
             case 4 -> registrarCita();
-            case 5 -> modificarCita();
+            case 5 -> modificarCancelarCita();
             case 6 -> obtenerReporteCitas();
             case 7 -> obtenerCitasProgramadas();
             case 8 -> obtenerCitasPorPaciente();
@@ -129,9 +133,89 @@ public class Principal {
         System.out.println("Funcionalidad de registrar cita no implementada.");
     }
 
-    public void modificarCita() {
-        System.out.println("Funcionalidad de modificar cita no implementada.");
+    public void modificarCancelarCita() {
+                System.out.println("1.- Modificar cita");
+                System.out.println("2.- Cancelar cita");
+                System.out.print("Seleccione una opción: ");
+                int subOpcion = input.nextInt();
+                input.skip("\n");
+
+                switch (subOpcion) {
+                    case 1 -> modificarCita();
+                    case 2 -> cancelarCita();
+                    default -> System.out.println("Opción inválida.");
+                }
     }
+                           
+    public void modificarCita() {
+        System.out.print("Ingrese el ID de la cita a modificar: ");
+        Long idCita = input.nextLong();
+        input.nextLine(); // Consumir el salto de línea
+
+        System.out.print("Ingrese la nueva fecha (YYYY-MM-DD): ");
+        String nuevaFecha = input.nextLine();
+
+        System.out.print("Ingrese la nueva hora (HH:MM): ");
+        String nuevaHora = input.nextLine();
+
+        if (!validarFecha(nuevaFecha)) {
+            System.out.println("Fecha inválida.");
+            return;
+        }
+
+        if (!validarHora(nuevaHora)) {
+            System.out.println("Hora inválida.");
+            return;
+        }
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaIngresada = LocalDate.parse(nuevaFecha, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        if (fechaIngresada.isBefore(fechaActual)) {
+            System.out.println("No se puede programar una cita en fechas anteriores a la actual.");
+            return;
+        }
+
+        Cita cita = citaService.modificarCita(idCita, nuevaFecha, nuevaHora);
+        if (cita != null) {
+            System.out.println("Cita modificada exitosamente: " + cita);
+        } else {
+            System.out.println("No se encontró una cita con ID " + idCita);
+        }
+    }
+                           
+        public boolean validarFecha(String fecha) {
+        Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+        Matcher matcher = pattern.matcher(fecha);
+        return matcher.matches();
+    }
+
+    public boolean validarHora(String hora) {
+        Pattern pattern = Pattern.compile("\\d{2}:\\d{2}");
+        Matcher matcher = pattern.matcher(hora);
+        return matcher.matches();
+    }
+
+    public void cancelarCita() {
+        System.out.print("Ingrese el ID de la cita a cancelar: ");
+        Long idCita = input.nextLong();
+        input.nextLine(); // Consumir el salto de línea
+
+        System.out.print("¿Está seguro de cancelar esta cita? (S/N): ");
+        String confirmacion = input.nextLine();
+
+        if (confirmacion.equalsIgnoreCase("S")) {
+            boolean cancelada = citaService.cancelarCita(idCita);
+            if (cancelada) {
+                System.out.println("Cita cancelada correctamente.");
+            } else {
+                System.out.println("No se encontró una cita con ID " + idCita);
+            }
+        } else {
+            System.out.println("Operación cancelada por el usuario.");
+        }
+    }
+                           
     public void obtenerCitasProgramadas() {
         System.out.println("Funcionalidad de obtener citas programadas no implementada.");
     }
@@ -237,7 +321,5 @@ public class Principal {
         System.out.println(paciente);
 
         //pacienteRepository.save(new Paciente(nombresPac,apellidosPac,dniPac,sexoPac,tlfPac,direccion,fechaNacPac));
-
     }
-
 }

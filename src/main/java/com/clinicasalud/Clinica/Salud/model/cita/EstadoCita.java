@@ -1,8 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
-public enum
-EstadoCita {
-    Programada,
+public enum EstadoCita {
     Atendida,
     Cancelada,
+    Programada
 }

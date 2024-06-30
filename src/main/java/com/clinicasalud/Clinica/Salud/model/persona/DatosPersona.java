@@ -1,23 +1,25 @@
 package com.clinicasalud.Clinica.Salud.model.persona;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-@Embeddable
-public class DatosPersona {
+public record DatosPersona(
 
-    @Column(name = "Nombres")
-    private String nombres;
+        @NotBlank
+        String nombres,
 
-    @Column(name = "Apellidos")
-    private String apellidos;
+        @NotBlank
+        String apellidos,
 
-    @Column(name = "DNI")
-    private String dni;
+        @NotBlank
+        @Pattern(regexp = "\\d{8}")
+        String dni,
 
-    @Column(name = "Sexo")
-    private char sexo;
+        @NotBlank
+        @Pattern(regexp="[MF]")
+        String sexo,
 
-    @Column(name = "Telefono")
-    private String telefono;
+        @Pattern(regexp = "9\\d{8}")
+        String telefono
+) {
 }

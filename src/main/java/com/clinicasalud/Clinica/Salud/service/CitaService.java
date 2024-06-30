@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CitaService {
@@ -47,7 +48,16 @@ public class CitaService {
     }
 
     public boolean cancelarCita(Long idCita) {
-        return false;
-    }
+        Optional<Cita> citaOptional = citaRepository.findById(idCita);
+        if (citaOptional.isPresent()) {
+            Cita cita = citaOptional.get();
+            cita.setEstadoCita(EstadoCita.Cancelada); // Establecer el estado como Cancelada
+            citaRepository.save(cita); // Guardar la cita actualizada con el estado cancelado
+            return true;
+        }
+        else {
+            return false; // La cita no existe en la base de datos
+        }
 
+    }
 }

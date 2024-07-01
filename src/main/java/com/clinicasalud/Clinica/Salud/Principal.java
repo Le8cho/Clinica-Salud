@@ -9,7 +9,7 @@ import com.clinicasalud.Clinica.Salud.model.paciente.PacienteService;
 
 import java.sql.Time;
 import java.time.LocalDate;
-import com.clinicasalud.Clinica.Salud.service.CitaService;
+import com.clinicasalud.Clinica.Salud.model.cita.CitaService;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.cita.EstadoCita;
 import org.springframework.beans.factory.annotation.Autowired;

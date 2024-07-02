@@ -3,10 +3,7 @@ package com.clinicasalud.Clinica.Salud.model.paciente;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.persona.Persona;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode(of = "idPaciente")
 public class Paciente {
     @Id
@@ -61,4 +59,5 @@ public class Paciente {
                 "\nestadoPaciente=" + estadoPaciente +
                 '}';
     }
+
 }

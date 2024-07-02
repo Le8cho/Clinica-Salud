@@ -1,5 +1,6 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
+
 import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
 import com.clinicasalud.Clinica.Salud.model.medico.Medico;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
@@ -47,4 +48,5 @@ public class Cita {
 
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Diagnostico> diagnosticos;
+
 }

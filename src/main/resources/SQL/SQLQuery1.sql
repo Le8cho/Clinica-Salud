@@ -118,7 +118,7 @@ CREATE TABLE Paciente (
 
 -- Creación de la tabla Cita
 CREATE TABLE Cita (
-                      ID_Cita BIGINT NOT NULL PRIMARY KEY,
+                      ID_Cita BIGINT NOT NULL IDENTITY PRIMARY KEY,
                       ID_Paciente BIGINT NOT NULL,
                       ID_Medico BIGINT NOT NULL,
                       Hora_Inicio TIME NOT NULL,

@@ -1,7 +1,14 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
+import com.clinicasalud.Clinica.Salud.model.medico.Medico;
+import com.clinicasalud.Clinica.Salud.model.medico.MedicoRepository;
+import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.clinicasalud.Clinica.Salud.model.cita.CitaRepository;
+
+import com.clinicasalud.Clinica.Salud.model.paciente.PacienteRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +22,14 @@ public class CitaService {
 
     @Autowired
     private CitaRepository citaRepository;
+
+    @Autowired
+    private MedicoRepository medicoRepository;
+
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
+
 
     public List<Cita> obtenerCitasPorRangoDeFechas(LocalDateTime startDate, LocalDateTime endDate) {
         return citaRepository.findByDateRange(startDate, endDate);
@@ -57,4 +72,28 @@ public class CitaService {
         }
 
     }
+
+    @Transactional
+    public void registrarCita(Long idPaciente, Long idMedico, LocalTime horaInicio, LocalDate fecha, String motivoConsulta, EstadoCita estadoCita) {
+
+        Paciente paciente = pacienteRepository.findById(idPaciente).orElseThrow(() -> new RuntimeException("Paciente no encontrado con ID: " + idPaciente));
+        Medico medico = medicoRepository.findById(idMedico).orElseThrow(() -> new RuntimeException("Médico no encontrado con ID: " + idMedico));
+
+        // Crear una nueva instancia de Cita
+        Cita cita = new Cita();
+        cita.setPaciente(paciente);
+        cita.setMedico(medico);
+        cita.setHoraInicio(horaInicio);
+        cita.setFecha(fecha);
+        cita.setMotivoConsulta(motivoConsulta);
+        cita.setEstadoCita(estadoCita);
+
+        // Guardar la cita en la base de datos
+        citaRepository.save(cita);
+
+        System.out.println("Cita registrada correctamente.");
+    }
 }
+
+
+

@@ -4,7 +4,10 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface CitaRepository extends JpaRepository<Cita, Long> {
@@ -23,4 +26,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("SELECT c FROM Cita c WHERE c.estadoCita = :estado")
     List<Cita> findByEstado(@Param("estado") EstadoCita estado);
 
+    @Query("SELECT COUNT(c) > 0 FROM Cita c WHERE c.medico.id = :idMedico AND c.fecha = :fecha AND c.horaInicio = :horaInicio")
+    boolean existsByMedicoAndFechaAndHoraInicio(@Param("idMedico") Long idMedico, @Param("fecha") LocalDate fecha, @Param("horaInicio") LocalTime horaInicio);
 }

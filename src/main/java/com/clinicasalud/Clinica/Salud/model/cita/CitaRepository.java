@@ -23,6 +23,10 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByMedico(@Param("medicoId") Long medicoId);
 
     @EntityGraph(attributePaths = {"paciente", "medico"})
+    @Query("SELECT c FROM Cita c WHERE c.medico.id = :medicoId AND c.fecha= :fecha")
+    List<Cita> findByMedicoandFecha(@Param("medicoId") Long medicoId, @Param("fecha") LocalDate fecha);
+
+    @EntityGraph(attributePaths = {"paciente", "medico"})
     @Query("SELECT c FROM Cita c WHERE c.estadoCita = :estado")
     List<Cita> findByEstado(@Param("estado") EstadoCita estado);
 

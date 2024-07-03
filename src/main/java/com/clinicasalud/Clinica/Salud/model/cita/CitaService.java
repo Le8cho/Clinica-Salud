@@ -38,6 +38,9 @@ public class CitaService {
     public List<Cita> obtenerCitasPorMedico(Long medicoId) {
         return citaRepository.findByMedico(medicoId);
     }
+    public List<Cita> obtenerCitasPorMedicoyFecha(Long medicoId, LocalDate fecha) {
+        return citaRepository.findByMedicoandFecha(medicoId,fecha);
+    }
 
     public List<Cita> obtenerCitasPorEstado(EstadoCita estado) {
         return citaRepository.findByEstado(estado);

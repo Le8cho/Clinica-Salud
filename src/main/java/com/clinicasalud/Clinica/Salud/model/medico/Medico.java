@@ -36,6 +36,9 @@ public class Medico {
     @Column(name= "Telefono")
     private String telefono;
 
+    @Column(name= "Correo")
+    private String correo;
+
     @Column(name= "Sexo",length = 1)
     private char sexo;
 

@@ -43,7 +43,8 @@ public class Principal {
 
     @Autowired
     private HorarioMedicoJpaService horarioMedicoJpaService;
-
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
     private final Scanner input = new Scanner(System.in);
 
 
@@ -106,7 +107,102 @@ public class Principal {
 
 
     public void registrarMedico() {
-        System.out.println("Funcionalidad de registrar médico no implementada.");
+
+        boolean novalido=false;
+        char sexo='M';
+        int estado;
+        String dni,telefono,correo;
+        System.out.println("Ingrese los nombres (Juan Jose)");
+        String nombres = input.nextLine();
+        System.out.println("Ingrese los apellidos (Perez Galvez)");
+        String apellidos = input.nextLine();
+        do {
+            System.out.println("Ingrese el sexo (M Masculino | F Femenino)");
+            String stringsexo=input.nextLine();
+            if (stringsexo.length() == 1) {
+                sexo = stringsexo.charAt(0);
+                novalido=false;
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese solo un carácter (M o F).");
+                novalido=true;
+            }
+        }while(novalido);
+        do {
+            System.out.println("Ingrese el estado (0 Activo | 1 Inactivo)");
+            estado=input.nextInt();
+            if (estado== 1 || estado==0) {
+                novalido=false;
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
+                novalido=true;
+            }
+        }while(novalido);
+        do {
+            System.out.println("Ingrese el DNI (12345678)");
+            dni = input.nextLine();
+            if(8!=dni.length()){
+                novalido=true;
+                System.out.println("Ingrese un numero de dni válido");
+            }else{
+                novalido=false;
+            }
+        }while(novalido);
+        do {
+            System.out.println("Ingrese el telefono (987654321)");
+            telefono = input.nextLine();
+            if(9!=telefono.length()){
+                novalido=true;
+                System.out.println("Ingrese un numero válido");
+            }else{
+                novalido=false;
+            }
+        }while(novalido);
+        do{
+            System.out.println("Ingrese el correo (ejemplo@gmail.com)");
+            correo = input.nextLine();
+            if(isValidEmail(correo)){
+                novalido=false;
+            }else{
+                System.out.println("Ingrese un correo válido");
+                novalido=true;
+            }
+        }while(novalido);
+        Especialidad especialidad1 = null;
+        do {
+            System.out.println("Ingrese la especialidad (Pediatra):");
+            String especial = input.nextLine();
+            especialidad1 = Especialidad.fromString(especial);
+            if (especialidad1 == null) {
+                novalido = true;
+                System.out.println("Coloque una especialidad que exista.");
+            } else {
+                novalido = false;
+            }
+        } while (novalido);
+        do{
+            System.out.println("Ingrese una opción");
+            System.out.println("0:Cancelar");
+            System.out.println("1:Ingresar");
+            int opcion = input.nextInt();
+            if(opcion!=0 || opcion!=1){
+                novalido=true;
+            }else{
+                novalido=false;
+                if(opcion==0){
+                    menu();
+                }else{
+                    medicoService.crearMedico(sexo,  nombres, apellidos,  dni,  telefono,  correo, estado,especialidad1);
+                    System.out.println("Médico registrado exitosamente.");
+                }
+            }
+        }while(novalido);
+    }
+    public static boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void registrarHorarioMedico() {
@@ -175,8 +271,8 @@ public class Principal {
 
         System.out.print("\nIngrese la especialidad que desea ver:");
         String nombreEspecialidad = input.nextLine();
+            Especialidad especialidad = Especialidad.fromString(nombreEspecialidad);
 
-        Especialidad especialidad = Especialidad.fromString(nombreEspecialidad);
         System.out.println("\nMédicos en la especialidad '" + nombreEspecialidad + "':");
         List<String> medicosEspecialidad = especialidadService.obtenerMedicoEspecialidad(especialidad);
         medicosEspecialidad.forEach(System.out::println);
@@ -324,7 +420,31 @@ public class Principal {
     }
                            
     public void obtenerCitasProgramadas() {
-        System.out.println("Funcionalidad de obtener citas programadas no implementada.");
+        boolean novalido=false;
+        String contrasena;
+        do{
+            System.out.println("Ingrese la contraseña");
+            contrasena = input.nextLine();
+            if (!medicoService.medicoExiste(contrasena)) {
+                System.out.println("El medico no existe.");
+                novalido=true;
+            }
+        }while(novalido);
+        Long id=medicoService.obtenerIdMedicoPorDni(contrasena);
+        System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
+        String fecha = input.nextLine();
+        LocalDate fechaIngresada = LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate fechaActual = LocalDate.now();
+        if (fechaIngresada.isBefore(fechaActual)) {
+            System.out.println("No se puede programar una cita en fechas anteriores a la actual.");
+            return;
+        }
+        List <Cita> citas = citaService.obtenerCitasPorMedicoyFecha(id, fechaIngresada);
+        if (citas != null) {
+            imprimirReporte(citas);
+        } else {
+            System.out.println("No hay citas en esta fecha. ");
+        }
     }
 
     public void obtenerCitasPorPaciente() {
@@ -387,13 +507,14 @@ public class Principal {
             for (Cita cita : citas) {
                 Hibernate.initialize(cita.getPaciente()); // Inicializar Paciente
                 Hibernate.initialize(cita.getMedico()); // Inicializar Medico
-                System.out.printf("Cita ID: %d, Paciente: %s %s, Médico: %s %s, Fecha: %s, Estado: %s%n",
+                System.out.printf("Cita ID: %d, Paciente: %s %s, Médico: %s %s, Fecha: %s,Hora: %s, Estado: %s%n",
                         cita.getIdCita(),
                         cita.getPaciente().getPersona().getNombres(),
                         cita.getPaciente().getPersona().getApellidos(),
                         cita.getMedico().getNombres(),
                         cita.getMedico().getApellidos(),
                         cita.getFecha().toString(),
+                        cita.getHoraInicio().toString(),
                         cita.getEstadoCita().toString());
             }
         }

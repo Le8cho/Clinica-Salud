@@ -130,10 +130,12 @@ public class Principal {
         do {
             System.out.println("Ingrese el estado (0 Activo | 1 Inactivo)");
             estado=input.nextInt();
+            input.nextLine();
             if (estado== 1 || estado==0) {
                 novalido=false;
             } else {
                 System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
+                input.next();
                 novalido=true;
             }
         }while(novalido);
@@ -169,7 +171,7 @@ public class Principal {
         }while(novalido);
         Especialidad especialidad1 = null;
         do {
-            System.out.println("Ingrese la especialidad (Pediatra):");
+            System.out.println("Ingrese la especialidad (Pediatria):");
             String especial = input.nextLine();
             especialidad1 = Especialidad.fromString(especial);
             if (especialidad1 == null) {
@@ -183,19 +185,28 @@ public class Principal {
             System.out.println("Ingrese una opción");
             System.out.println("0:Cancelar");
             System.out.println("1:Ingresar");
-            int opcion = input.nextInt();
-            if(opcion!=0 || opcion!=1){
-                novalido=true;
-            }else{
-                novalido=false;
-                if(opcion==0){
+            if (input.hasNextInt()) {
+                int opcion = input.nextInt();
+                input.nextLine();
+                if (opcion == 0) {
                     menu();
-                }else{
-                    medicoService.crearMedico(sexo,  nombres, apellidos,  dni,  telefono,  correo, estado,especialidad1);
+                    return;
+                } else if (opcion == 1) {
+
+                    medicoService.crearMedico(sexo, nombres, apellidos, dni, telefono, correo, estado, especialidad1);
                     System.out.println("Médico registrado exitosamente.");
+                    novalido = false;
+                } else {
+                    System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
+                    novalido = true;
                 }
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
+                input.next();
+                novalido = true;
             }
         }while(novalido);
+        input.close();
     }
     public static boolean isValidEmail(String email) {
         if (email == null) {
@@ -431,14 +442,21 @@ public class Principal {
             }
         }while(novalido);
         Long id=medicoService.obtenerIdMedicoPorDni(contrasena);
-        System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
-        String fecha = input.nextLine();
-        LocalDate fechaIngresada = LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE);
+        String fecha;
         LocalDate fechaActual = LocalDate.now();
-        if (fechaIngresada.isBefore(fechaActual)) {
-            System.out.println("No se puede programar una cita en fechas anteriores a la actual.");
-            return;
-        }
+        LocalDate fechaIngresada;
+        do{
+            System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
+            fecha = input.nextLine();
+            fechaIngresada = LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE);
+            if (fechaIngresada.isBefore(fechaActual)) {
+                System.out.println("Ingrese una fecha válida.");
+                novalido=true;
+            }else{
+                novalido=false;
+            }
+        }while(novalido);
+
         List <Cita> citas = citaService.obtenerCitasPorMedicoyFecha(id, fechaIngresada);
         if (citas != null) {
             imprimirReporte(citas);

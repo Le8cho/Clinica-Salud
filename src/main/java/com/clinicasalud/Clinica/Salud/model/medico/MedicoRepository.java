@@ -25,7 +25,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             "ORDER BY da.idDia, hm.horaInicio")
     List<String> findHorarioMedico(String nombres, String apellidos);
     @Query("SELECT m.id FROM Medico m WHERE m.dni = :dni")
-    Long getIdMedicoByDni(@Param("DNI") String dni);
+    Long getIdMedicoByDni(@Param("dni") String dni);
 
     @Query("SELECT m.id FROM Medico m WHERE m.apellidos = :apellidos AND m.nombres = :nombres ")
     Long getIdMedicoByNombreAndApellido(@Param("apellidos") String apellido, @Param("nombres") String nombre);

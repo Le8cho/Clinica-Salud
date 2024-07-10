@@ -5,10 +5,10 @@ import com.clinicasalud.Clinica.Salud.model.medico.Medico;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 
 @Table(name="Cita")
@@ -47,4 +47,23 @@ public class Cita {
 
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Diagnostico> diagnosticos;
+
+    private Calendar fechaInicio;
+    private Calendar fechaFin;
+
+    public Calendar getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Calendar fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Calendar getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Calendar fechaFin) {
+        this.fechaFin = fechaFin;
+    }
 }

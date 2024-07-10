@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CitaService {
@@ -57,4 +58,15 @@ public class CitaService {
         }
 
     }
+    //FUNCION ESCALAR 1 FABRIZIO
+    public double calcularDuracionPromedio() {
+        List<Cita> citas = citaRepository.findAll();
+        long totalDuration = 0;
+        for (Cita cita : citas) {
+            long duration = cita.getFechaFin().getTimeInMillis() - cita.getFechaInicio().getTimeInMillis();
+            totalDuration += duration;
+        }
+        return (double) totalDuration / citas.size() / TimeUnit.MINUTES.toMillis(1);
+    }
 }
+

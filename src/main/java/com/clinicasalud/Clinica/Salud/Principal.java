@@ -2,10 +2,10 @@ package com.clinicasalud.Clinica.Salud;
 
 import com.clinicasalud.Clinica.Salud.model.cita.*;
 import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
-import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoJpaService;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoJpaRepository;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoService;
 import com.clinicasalud.Clinica.Salud.model.medico.Especialidad;
 import com.clinicasalud.Clinica.Salud.model.medico.EspecialidadService;
-import com.clinicasalud.Clinica.Salud.model.medico.Medico;
 import com.clinicasalud.Clinica.Salud.model.medico.MedicoService;
 import com.clinicasalud.Clinica.Salud.model.paciente.DatosCrearPaciente;
 import com.clinicasalud.Clinica.Salud.model.paciente.Paciente;
@@ -18,8 +18,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +33,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Component
 public class Principal {
 
     private PacienteRepository pacienteRepository;
@@ -39,15 +42,15 @@ public class Principal {
     private MedicoService medicoService;
     private CitaRepository citaRepository;
     @Autowired
-    private CitaService citaService;
-
+    private HorarioMedicoService horarioMedicoService;
     @Autowired
-    private HorarioMedicoJpaService horarioMedicoJpaService;
-    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    private RegistrarMedico registrarMedico;
+    @Autowired
+    private RegistrarCita registrarCita;
+    private CitaService citaService;
     private final Scanner input = new Scanner(System.in);
 
-
+    @Autowired
     public Principal(PacienteRepository pacienteRepository, PacienteService pacienteService,
                      EspecialidadService especialidadService, MedicoService medicoService, CitaService citaService){
         this.pacienteRepository = pacienteRepository;
@@ -55,7 +58,6 @@ public class Principal {
         this.especialidadService = especialidadService;
         this.medicoService = medicoService;
         this.citaService = citaService;
-
     }
 
     public void menu() {
@@ -77,7 +79,7 @@ public class Principal {
     public void menuOpciones() {
         System.out.println("""
                 Elija la opción a través de su número:
-                1.- Registrar médicos en el sistema
+                1.- Registrar médicos y horario en el sistema
                 2.- Registrar horario de médico
                 3.- Registrar Paciente
                 4.- Registrar cita
@@ -92,10 +94,10 @@ public class Principal {
 
     public void evaluandoOpcion(int opcion) {
         switch (opcion) {
-            case 1 -> registrarMedico();
-            case 2 -> registrarHorarioMedico();
+            case 1 -> registrarMedico.run();
+            case 2 -> registrarMedico.registrarHorarioMedico();
             case 3 -> consultarDatosNuevoPaciente();
-            case 4 -> registrarCita();
+            case 4 -> registrarCita.run();
             case 5 -> modificarCancelarCita();
             case 6 -> obtenerReporteCitas();
             case 7 -> obtenerCitasProgramadas();
@@ -105,246 +107,6 @@ public class Principal {
         }
     }
 
-
-    public void registrarMedico() {
-
-        boolean novalido=false;
-        char sexo='M';
-        int estado;
-        String dni,telefono,correo;
-        System.out.println("Ingrese los nombres (Juan Jose)");
-        String nombres = input.nextLine();
-        System.out.println("Ingrese los apellidos (Perez Galvez)");
-        String apellidos = input.nextLine();
-        do {
-            System.out.println("Ingrese el sexo (M Masculino | F Femenino)");
-            String stringsexo=input.nextLine();
-            if (stringsexo.length() == 1) {
-                sexo = stringsexo.charAt(0);
-                novalido=false;
-            } else {
-                System.out.println("Entrada inválida. Por favor, ingrese solo un carácter (M o F).");
-                novalido=true;
-            }
-        }while(novalido);
-        do {
-            System.out.println("Ingrese el estado (0 Activo | 1 Inactivo)");
-            estado=input.nextInt();
-            input.nextLine();
-            if (estado== 1 || estado==0) {
-                novalido=false;
-            } else {
-                System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
-                input.next();
-                novalido=true;
-            }
-        }while(novalido);
-        do {
-            System.out.println("Ingrese el DNI (12345678)");
-            dni = input.nextLine();
-            if(8!=dni.length()){
-                novalido=true;
-                System.out.println("Ingrese un numero de dni válido");
-            }else{
-                novalido=false;
-            }
-        }while(novalido);
-        do {
-            System.out.println("Ingrese el telefono (987654321)");
-            telefono = input.nextLine();
-            if(9!=telefono.length()){
-                novalido=true;
-                System.out.println("Ingrese un numero válido");
-            }else{
-                novalido=false;
-            }
-        }while(novalido);
-        do{
-            System.out.println("Ingrese el correo (ejemplo@gmail.com)");
-            correo = input.nextLine();
-            if(isValidEmail(correo)){
-                novalido=false;
-            }else{
-                System.out.println("Ingrese un correo válido");
-                novalido=true;
-            }
-        }while(novalido);
-        Especialidad especialidad1 = null;
-        do {
-            System.out.println("Ingrese la especialidad (Pediatria):");
-            String especial = input.nextLine();
-            especialidad1 = Especialidad.fromString(especial);
-            if (especialidad1 == null) {
-                novalido = true;
-                System.out.println("Coloque una especialidad que exista.");
-            } else {
-                novalido = false;
-            }
-        } while (novalido);
-        do{
-            System.out.println("Ingrese una opción");
-            System.out.println("0:Cancelar");
-            System.out.println("1:Ingresar");
-            if (input.hasNextInt()) {
-                int opcion = input.nextInt();
-                input.nextLine();
-                if (opcion == 0) {
-                    menu();
-                    return;
-                } else if (opcion == 1) {
-
-                    medicoService.crearMedico(sexo, nombres, apellidos, dni, telefono, correo, estado, especialidad1);
-                    System.out.println("Médico registrado exitosamente.");
-                    novalido = false;
-                } else {
-                    System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
-                    novalido = true;
-                }
-            } else {
-                System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
-                input.next();
-                novalido = true;
-            }
-        }while(novalido);
-        input.close();
-    }
-    public static boolean isValidEmail(String email) {
-        if (email == null) {
-            return false;
-        }
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public void registrarHorarioMedico() {
-
-        boolean continuar = true;
-        while (continuar) {
-            System.out.println("Ingrese el horario del médico:");
-            LocalTime horadeInicio = leerHora("Hora de inicio (HH:MM): ");
-            LocalTime horaFin = leerHora("Hora de fin (HH:MM): ");
-
-            if (horadeInicio != null && horaFin != null) {
-                if (horadeInicio.isBefore(horaFin)) {
-                    HorarioMedico horarioMedico = new HorarioMedico();
-                    horarioMedico.setHoraInicio(Time.valueOf(horadeInicio));
-                    horarioMedico.setHoraFin(Time.valueOf(horaFin));
-
-                    horarioMedicoJpaService.save(horarioMedico);
-                    System.out.println("Horario del médico registrado exitosamente.");
-                } else {
-                    System.out.println("La hora de inicio debe ser anterior a la hora de fin.");
-                }
-            }
-
-            System.out.print("¿Desea registrar otro horario? (S/N): ");
-            String respuesta = input.nextLine().trim().toUpperCase();
-            continuar = respuesta.equals("S");
-        }
-    }
-
-    private LocalTime leerHora(String mensaje) {
-        while (true) {
-            System.out.print(mensaje);
-            String horaStr = input.nextLine();
-            try {
-                return LocalTime.parse(horaStr);
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato de hora inválido. Use el formato HH:MM.");
-            }
-        }
-    }
-
-
-    public void registrarCita() {
-        //Validar registro de lunes a sabado de 7 a 19 horas
-        LocalTime horaSistema = LocalTime.now();
-        LocalDate diaSistema = LocalDate.now();
-        DayOfWeek diaSemana = diaSistema.getDayOfWeek();
-        if (diaSemana == DayOfWeek.SUNDAY || horaSistema.isBefore(LocalTime.of(7, 0)) || horaSistema.isAfter(LocalTime.of(19, 0))) {
-            System.out.println("Solo se pueden registrar citas de lunes a sábado entre las 7 y las 19 horas.");
-            return;
-        }
-
-        try{
-
-        System.out.print("Ingrese DNI del paciente: ");
-        String dni = input.nextLine();
-        // Validar si el paciente existe
-            if (!pacienteService.pacienteExiste(dni)) {
-                System.out.println("El paciente no está registrado en el sistema.");
-                return;
-            }
-
-        System.out.println("Especialidades disponibles:");
-        List<String> especialidadesDisponibles = especialidadService.obtenerEspecialidadesDisponibles();
-        especialidadesDisponibles.forEach(System.out::println);
-
-        System.out.print("\nIngrese la especialidad que desea ver:");
-        String nombreEspecialidad = input.nextLine();
-            Especialidad especialidad = Especialidad.fromString(nombreEspecialidad);
-
-        System.out.println("\nMédicos en la especialidad '" + nombreEspecialidad + "':");
-        List<String> medicosEspecialidad = especialidadService.obtenerMedicoEspecialidad(especialidad);
-        medicosEspecialidad.forEach(System.out::println);
-
-        System.out.println("Ingrese el medico para registrar su cita (Apellido, nombre):");
-        String nombreMedico = input.nextLine().trim();
-        String apellidoMedico = input.nextLine().trim();
-
-        System.out.println("Horarios del médico "+ apellidoMedico+","+ nombreMedico+": " );
-        List<String> horarioMedico = medicoService.obtenerHorarioMedico(apellidoMedico,nombreMedico);
-        horarioMedico.forEach(System.out::println);
-
-        System.out.println("Ingrese el horario (Fecha YYYY-MM-DD, hora HH:mm): ");
-        String horarioDia = input.nextLine();
-        String horarioHora = input.nextLine();
-
-        // Validar que haya al menos 30 minutos de anticipación desde ahora hasta la cita
-        LocalDate dia = LocalDate.parse(horarioDia);
-        LocalTime hora = LocalTime.parse(horarioHora);
-        LocalDateTime ahora = LocalDateTime.now();
-        LocalDateTime horaCitaDateTime = LocalDateTime.of(dia, hora);
-        long minutosAnticipacion = ChronoUnit.MINUTES.between(ahora, horaCitaDateTime);
-
-        if (minutosAnticipacion < 30) {
-            System.out.println("Debe programar la cita con al menos 30 minutos de anticipación.");
-                return;
-            }
-        // Validar que la hora de la cita sea válida (8, 9, 10, etc.)
-        if (hora.getMinute() != 0 || hora.getSecond() != 0) {
-            System.out.println("La cita debe comenzar en una hora exacta (ejemplo: 8:00, 9:00, 10:00).");
-            return;
-        }
-        System.out.println("¿Confirma el registro de la cita? (S/N): ");
-        System.out.println("Especialidad: "+nombreEspecialidad);
-        System.out.println("Medico: "+nombreMedico);
-        System.out.println("Dia: "+horarioDia);
-        System.out.println("Hora: "+horarioHora);
-        String confirmacion = input.nextLine();
-
-        if (confirmacion.equalsIgnoreCase("S")) {
-            Long idPaciente = pacienteService.obtenerIdPacientePorDni(dni);
-            Long idMedico = medicoService.obtenerIdMedicoPorNombreYApellido(nombreMedico, apellidoMedico);
-            LocalDate fecha = LocalDate.parse(horarioDia);
-            LocalTime horaInicio = LocalTime.parse(horarioHora);
-            EstadoCita estadoCita = EstadoCita.Programada;
-
-            // Validar si ya existe una cita con el médico en la fecha y hora especificadas
-            if (citaRepository.existsByMedicoAndFechaAndHoraInicio(idMedico, fecha, horaInicio)) {
-                System.out.println("El médico ya tiene una cita programada en esta fecha y hora.");
-                return;
-            }
-
-            citaService.registrarCita(idPaciente, idMedico, horaInicio, fecha, "Motivo", estadoCita);
-        } else {
-            System.out.println("Registro de cita cancelado.");
-        }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
 
 
     public void modificarCancelarCita() {

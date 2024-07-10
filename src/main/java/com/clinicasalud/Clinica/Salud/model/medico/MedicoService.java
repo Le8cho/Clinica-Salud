@@ -8,13 +8,15 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MedicoService {
 
     @Autowired
     private MedicoRepository medicoRepository;
-
     public List<String> obtenerHorarioMedico(String apellido, String nombre) {
         return medicoRepository.findHorarioMedico(apellido, nombre);
     }
@@ -39,4 +41,5 @@ public class MedicoService {
         medico.setEspecialidad(especialidad);
         medicoRepository.save(medico);
     }
+
 }

@@ -25,15 +25,10 @@ public class Principal {
     private final Scanner input = new Scanner(System.in);
     public void menu() {
         System.out.println("Bienvenido al sistema de gestión de la Clínica de Salud");
-        int opcion;
+        int opcion=-1;
         do {
             menuOpciones();
             opcion = input.nextInt();
-            input.nextLine(); // Consumir el carácter de nueva línea
-            while (!input.hasNextInt()) {
-                System.out.println("Por favor ingrese un número válido.");
-                input.next(); // Limpiar entrada inválida
-            }
             evaluandoOpcion(opcion);
         } while (opcion != 0);
     }

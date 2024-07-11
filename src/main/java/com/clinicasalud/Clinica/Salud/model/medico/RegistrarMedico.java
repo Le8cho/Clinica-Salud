@@ -109,7 +109,6 @@ public class RegistrarMedico {
                 novalido = true;
             }
         }while(novalido);
-        input.close();
     }
     public HorarioMedico crearHorarioMedico(){
             System.out.println("Ingrese el horario del médico:");

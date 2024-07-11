@@ -3,6 +3,7 @@ import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
 import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoService;
 import com.clinicasalud.Clinica.Salud.model.medico.Especialidad;
 import com.clinicasalud.Clinica.Salud.model.medico.MedicoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.time.LocalTime;
@@ -21,6 +22,7 @@ public class RegistrarMedico {
     private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
     private final Scanner input = new Scanner(System.in);
 
+    @Transactional
     public void run(){
         System.out.println("Primero Se creara el horario del Médico");
         var horarioMedico=crearHorarioMedico();
@@ -110,6 +112,8 @@ public class RegistrarMedico {
             }
         }while(novalido);
     }
+
+    @Transactional
     public HorarioMedico crearHorarioMedico(){
             System.out.println("Ingrese el horario del médico:");
             LocalTime horadeInicio = leerHora("Hora de inicio (HH:MM): ");

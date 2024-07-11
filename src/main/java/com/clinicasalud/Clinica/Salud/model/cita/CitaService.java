@@ -49,6 +49,7 @@ public class CitaService {
         return citaRepository.findByPacienteIdPaciente(idPaciente);
     }
 
+    @Transactional
     public Cita modificarCita(Long idCita, String nuevaFecha, String nuevaHora) {
         Cita cita = citaRepository.findById(idCita).orElseThrow(() -> new RuntimeException("Cita no encontrada"));
 
@@ -61,6 +62,7 @@ public class CitaService {
         return citaRepository.save(cita);
     }
 
+    @Transactional
     public boolean cancelarCita(Long idCita) {
         Optional<Cita> citaOptional = citaRepository.findById(idCita);
         if (citaOptional.isPresent()) {

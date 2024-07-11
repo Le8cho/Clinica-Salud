@@ -1,6 +1,7 @@
 package com.clinicasalud.Clinica.Salud.model.medico;
 import com.clinicasalud.Clinica.Salud.model.cita.Cita;
 import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class MedicoService {
     public List<String> obtenerHorarioMedico(String apellido, String nombre) {
         return medicoRepository.findHorarioMedico(apellido, nombre);
     }
+
     public List<Medico> encontrarMedicosConCitas(){
         return medicoRepository.encontrarMedicosConCitas();
     }
@@ -34,6 +36,8 @@ public class MedicoService {
     public long obtenerIdMedicoPorNombreYApellido(String nombre, String apellido) {
         return medicoRepository.getIdMedicoByNombreAndApellido(nombre, apellido);
     }
+
+    @Transactional
     public void crearMedico(HorarioMedico horarioMedico, char sexo, String nombres, String apellidos, String dni, String telefono, String correo, int estado, Especialidad especialidad){
         Medico medico = new Medico();
         medico.setIdHorarioMedico(horarioMedico);
@@ -47,6 +51,7 @@ public class MedicoService {
         medico.setEspecialidad(especialidad);
         medicoRepository.save(medico);
     }
+
     public List<Object[]> consultarTodosMedicosHorario(){
         return medicoRepository.consultarTodosMedicosHorario();
     }

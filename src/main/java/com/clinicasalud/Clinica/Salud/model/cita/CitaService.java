@@ -1,5 +1,8 @@
 package com.clinicasalud.Clinica.Salud.model.cita;
 
+import com.clinicasalud.Clinica.Salud.model.diagnostico.Diagnostico;
+import com.clinicasalud.Clinica.Salud.service.ProcedimientoAlmacenadoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,9 @@ public class CitaService {
     @Autowired
     private CitaRepository citaRepository;
 
+    @Autowired
+    private ProcedimientoAlmacenadoService procedimientoAlmacenadoService;
+
     public List<Cita> obtenerCitasPorRangoDeFechas(LocalDateTime startDate, LocalDateTime endDate) {
         return citaRepository.findByDateRange(startDate, endDate);
     }
@@ -31,6 +37,18 @@ public class CitaService {
 
     public List<Cita> obtenerCitasPorPaciente(Long idPaciente) {
         return citaRepository.findByPacienteIdPaciente(idPaciente);
+    }
+
+    public List<Cita> obtenerCitasPorFechaYMedico(Long medicoId, String fechaInicio, String fechaFin) {
+        return procedimientoAlmacenadoService.obtenerCitasPorFechaYMedico(medicoId, fechaInicio, fechaFin);
+    }
+
+    public void actualizarEstadoCita(Long citaId, String nuevoEstado) {
+        procedimientoAlmacenadoService.actualizarEstadoCita(citaId, nuevoEstado);
+    }
+
+    public List<Diagnostico> obtenerDiagnosticosPorPaciente(Long pacienteId) {
+        return procedimientoAlmacenadoService.obtenerDiagnosticosPorPaciente(pacienteId);
     }
 
     public Cita modificarCita(Long idCita, String nuevaFecha, String nuevaHora) {

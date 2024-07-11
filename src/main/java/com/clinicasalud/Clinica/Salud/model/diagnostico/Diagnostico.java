@@ -38,4 +38,8 @@ public class Diagnostico {
 
     @OneToMany(mappedBy = "diagnostico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ApoyoDiagnostico> apoyoDiagnosticos;
+
+    public void setIdDiagnostico(Long idDiagnostico) {
+        this.idDiagnostico = idDiagnostico;
+    }
 }

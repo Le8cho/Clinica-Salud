@@ -67,53 +67,52 @@ CREATE TABLE Usuario (
 
 -- Creación de la tabla Dia_Atencion
 CREATE TABLE Dia_Atencion (
- ID_Dia BIGINT NOT NULL PRIMARY KEY,
- Dia VARCHAR(50) NOT NULL UNIQUE
+                              ID_Dia BIGINT NOT NULL PRIMARY KEY,
+                              Dia VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- Creación de la tabla Horario_Medico
 CREATE TABLE Horario_Medico (
-  ID_Horario_Medico BIGINT IDENTITY(1,1) PRIMARY KEY,
-  Hora_Inicio TIME NOT NULL,
-  Hora_Fin TIME NOT NULL
+                                ID_Horario_Medico BIGINT IDENTITY(1,1) PRIMARY KEY,
+                                Hora_Inicio TIME NOT NULL,
+                                Hora_Fin TIME NOT NULL
 );
 
 -- Creación de la tabla Horario_Dia
 CREATE TABLE Horario_Dia (
-  ID_Horario_Medico BIGINT NOT NULL,
-  ID_Dia BIGINT NOT NULL,
-  PRIMARY KEY(ID_Horario_Medico, ID_Dia),
-  FOREIGN KEY(ID_Horario_Medico) REFERENCES Horario_Medico(ID_Horario_Medico),
-  FOREIGN KEY(ID_Dia) REFERENCES Dia_Atencion(ID_Dia)
+                             ID_Horario_Medico BIGINT NOT NULL,
+                             ID_Dia BIGINT NOT NULL,
+                             PRIMARY KEY(ID_Horario_Medico, ID_Dia),
+                             FOREIGN KEY(ID_Horario_Medico) REFERENCES Horario_Medico(ID_Horario_Medico),
+                             FOREIGN KEY(ID_Dia) REFERENCES Dia_Atencion(ID_Dia)
 );
 
 -- Creación de la tabla Medico
 CREATE TABLE Medico (
-  ID_Medico BIGINT NOT NULL PRIMARY KEY,
-  ID_Horario_Medico BIGINT NOT NULL,
-  Nombres VARCHAR(255) NOT NULL,
-  Apellidos VARCHAR(255) NOT NULL,
-  DNI CHAR(8) NOT NULL UNIQUE,
-  Correo VARCHAR(255) UNIQUE,
-  Telefono VARCHAR(15),
-  Sexo CHAR(1),
-  Estado TINYINT NOT NULL,
-  Especialidad VARCHAR(255) NOT NULL,
-  FOREIGN KEY (ID_Horario_Medico) REFERENCES Horario_Medico(ID_Horario_Medico)
+                        ID_Medico BIGINT IDENTITY(1,1) PRIMARY KEY,
+                        ID_Horario_Medico BIGINT NOT NULL,
+                        Nombres VARCHAR(255) NOT NULL,
+                        Apellidos VARCHAR(255) NOT NULL,
+                        DNI CHAR(8) NOT NULL UNIQUE,
+                        Correo VARCHAR(255) UNIQUE,
+                        Telefono VARCHAR(15),
+                        Sexo CHAR(1),
+                        Estado TINYINT NOT NULL,
+                        Especialidad VARCHAR(255) NOT NULL,
+                        FOREIGN KEY (ID_Horario_Medico) REFERENCES Horario_Medico(ID_Horario_Medico)
 );
 
 -- Creación de la tabla Paciente
 CREATE TABLE Paciente (
-    ID_Paciente BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-    Nombres VARCHAR(255) NOT NULL,
-    Apellidos VARCHAR(255) NOT NULL,
-    DNI CHAR(8) NOT NULL UNIQUE,
-    Direccion VARCHAR(255),  
-    Telefono CHAR(15),        
-    Sexo CHAR(1),
-    Fecha_Nacimiento DATE NOT NULL,
-    Estado_Paciente TINYINT NOT NULL
-
+                          ID_Paciente BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+                          Nombres VARCHAR(255) NOT NULL,
+                          Apellidos VARCHAR(255) NOT NULL,
+                          DNI CHAR(8) NOT NULL UNIQUE,
+                          Direccion VARCHAR(255),
+                          Telefono CHAR(15),
+                          Sexo CHAR(1),
+                          Fecha_Nacimiento DATE NOT NULL,
+                          Estado_Paciente TINYINT NOT NULL
 );
 
 -- Creación de la tabla Cita
@@ -192,29 +191,30 @@ INSERT INTO Horario_Dia(ID_Horario_Medico, ID_Dia) VALUES
                                                        (5, 2),
                                                        (5, 3);
 
-INSERT INTO Medico (ID_Medico, ID_Horario_Medico, Nombres, Apellidos, DNI, Correo, Telefono, Sexo, Estado, Especialidad) VALUES
-                                                                                                                             (1, 1, 'Carlos', 'Mendez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'CARDIOLOGIA'),
-                                                                                                                             (2, 2, 'Ana', 'Garcia', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'DERMATOLOGIA'),
-                                                                                                                             (3, 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'NEUROLOGIA'),
-                                                                                                                             (4, 4, 'Lucia', 'Fernandez', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'PEDIATRIA'),
-                                                                                                                             (5, 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'GASTROENTEROLOGIA');
+INSERT INTO Medico ( ID_Horario_Medico, Nombres, Apellidos, DNI, Correo, Telefono, Sexo, Estado, Especialidad) VALUES
+                                                                                                                   ( 1, 'Carlos', 'Mendez', '12345678', 'carlos.mendez@email.com', '999999999', 'M', 1, 'CARDIOLOGIA'),
+                                                                                                                   ( 2, 'Ana', 'Garcia', '23456789', 'ana.garcia@email.com', '888888888', 'F', 1, 'DERMATOLOGIA'),
+                                                                                                                   ( 3, 'Julio', 'Torres', '34567890', 'julio.torres@email.com', '777777777', 'M', 1, 'NEUROLOGIA'),
+                                                                                                                   ( 4, 'Lucia', 'Fernandez', '45678901', 'lucia.fernandez@email.com', '666666666', 'F', 1, 'PEDIATRIA'),
+                                                                                                                   ( 5, 'Marco', 'Ruiz', '56789012', 'marco.ruiz@email.com', '555555555', 'M', 1, 'GASTROENTEROLOGIA');
 
-
---Mas Pacientes
+-- Más Pacientes
 INSERT INTO Paciente (Nombres, Apellidos, DNI, Direccion, Telefono, Sexo, Fecha_Nacimiento, Estado_Paciente) VALUES
-('Juan', 'Perez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
-('Maria', 'Lopez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
-('Pedro', 'Martinez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
-('Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
-('Luis', 'Gomez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
-('Sofia', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
-('Ricardo', 'Juarez', '65432109', 'Gran Vía 234', '234567890', 'M', '1988-07-12', 1),
-('Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
-('Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
-('Lucia', 'Diaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
+                                                                                                                 ('Juan', 'Perez', '87654321', 'Calle Falsa 123', '444444444', 'M', '1990-01-01', 1),
+                                                                                                                 ('Maria', 'Lopez', '98765432', 'Avenida Siempre Viva 456', '333333333', 'F', '1982-02-02', 1),
+                                                                                                                 ('Pedro', 'Martinez', '09876543', 'Camino Largo 789', '222222222', 'M', '1974-03-03', 1),
+                                                                                                                 ('Carmen', 'Sanchez', '10987654', 'Ronda de Nelle 101', '111111111', 'F', '1966-04-04', 1),
+                                                                                                                 ('Luis', 'Gomez', '21098765', 'Plaza del Sol 567', '000000000', 'M', '1958-05-05', 1),
+                                                                                                                 ('Sofia', 'Morales', '76543210', 'Paseo de la Reforma 123', '123456789', 'F', '1992-03-08', 1),
+                                                                                                                 ('Ricardo', 'Juarez', '65432109', 'Gran Vía 234', '234567890', 'M', '1988-07-12', 1),
+                                                                                                                 ('Elena', 'Castro', '54321098', 'Diagonal 345', '345678901', 'F', '1975-11-23', 1),
+                                                                                                                 ('Fernando', 'Ramos', '43210987', 'Sunset Boulevard 456', '456789012', 'M', '1964-02-15', 1),
+                                                                                                                 ('Lucia', 'Diaz', '32109876', 'Fifth Avenue 567', '567890123', 'F', '1999-12-01', 1);
 
---Mas Citas
+-- Activar IDENTITY_INSERT para la tabla Cita
+SET IDENTITY_INSERT Cita ON;
 
+-- Más Citas
 INSERT INTO Cita (ID_Cita, ID_Paciente, ID_Medico, Hora_Inicio, Fecha, Motivo_Consulta, Estado_Cita) VALUES
                                                                                                          (1, 1, 1, '09:00', '2023-07-10', 'Revision general', 'Programada'),
                                                                                                          (2, 2, 2, '10:00', '2023-07-11', 'Consulta dermatologica', 'Programada'),
@@ -226,6 +226,9 @@ INSERT INTO Cita (ID_Cita, ID_Paciente, ID_Medico, Hora_Inicio, Fecha, Motivo_Co
                                                                                                          (8, 8, 3, '16:00', '2023-07-17', 'Evaluacion de sintomas', 'Programada'),
                                                                                                          (9, 9, 4, '17:00', '2023-07-18', 'Consulta prenatal', 'Programada'),
                                                                                                          (10, 10, 5, '09:00', '2023-07-19', 'Control de alergias', 'Programada');
+
+-- Desactivar IDENTITY_INSERT para la tabla Cita
+SET IDENTITY_INSERT Cita OFF;
 
 -- Más Diagnosticos
 INSERT INTO Diagnostico (ID_Diagnostico, ID_Cita, Descripcion, Sospecha_Diagnostica) VALUES

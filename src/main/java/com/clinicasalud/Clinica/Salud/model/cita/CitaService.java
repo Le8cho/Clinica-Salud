@@ -38,6 +38,9 @@ public class CitaService {
     public List<Cita> obtenerCitasPorMedico(Long medicoId) {
         return citaRepository.findByMedico(medicoId);
     }
+    public List<Cita> obtenerCitasPorMedicoyFecha(Long medicoId, LocalDate fecha) {
+        return citaRepository.findByMedicoandFecha(medicoId,fecha);
+    }
 
     public List<Cita> obtenerCitasPorEstado(EstadoCita estado) {
         return citaRepository.findByEstado(estado);
@@ -72,7 +75,9 @@ public class CitaService {
         }
 
     }
-
+    public boolean existeCita(Long idMedico, LocalDate fecha, LocalTime horaInicio){
+        return (citaRepository.existsByMedicoAndFechaAndHoraInicio(idMedico, fecha, horaInicio));
+    }
     @Transactional
     public void registrarCita(Long idPaciente, Long idMedico, LocalTime horaInicio, LocalDate fecha, String motivoConsulta, EstadoCita estadoCita) {
 

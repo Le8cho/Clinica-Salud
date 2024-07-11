@@ -14,7 +14,7 @@ public class DatabaseConnectionChecker
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void checkDatabaseConnection() {
         try {
             String sqlQuery = "SELECT * FROM Medico"; // Ejemplo: selecciona los primeros 5 registros de la tabla Customers

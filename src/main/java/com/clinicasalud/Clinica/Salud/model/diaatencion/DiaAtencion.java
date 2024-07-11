@@ -28,4 +28,12 @@ public class DiaAtencion {
 
     @OneToMany(mappedBy = "horarioDiaKey.diaAtencion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HorarioDia> horarioDias;
+
+    @Override
+    public String toString() {
+        return "DiaAtencion{" +
+                "idDia=" + idDia +
+                ", diaSemana=" + diaSemana +
+                '}';
+    }
 }

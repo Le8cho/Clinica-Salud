@@ -11,6 +11,8 @@ public class Principal {
     @Autowired
     private RegistrarMedico registrarMedico;
     @Autowired
+    private ConsultasCorrelacionadas consultasCorrelacionadas;
+    @Autowired
     private RegistrarCita registrarCita;
     @Autowired
     private ModificarCancelarCita modificarCancelarCita;
@@ -36,12 +38,13 @@ public class Principal {
         System.out.println("""
                 Elija la opción a través de su número:
                 1.- Registrar médicos
-                3.- Registrar Paciente
-                4.- Registrar cita
-                5.- Modificar/cancelar cita
-                6.- Obtener reporte de citas
-                7.- Obtener citas programadas
-                8.- Obtener citas por paciente
+                2.- Registrar Paciente
+                3.- Registrar cita
+                4.- Modificar/cancelar cita
+                5.- Obtener reporte de citas
+                6.- Obtener citas programadas
+                7.- Obtener citas por paciente
+                8.- Consultas Correlacionadas
                 0.- Saliste del Sistema lo lamento papu
                 """);
         System.out.print("Opción: ");
@@ -55,6 +58,7 @@ public class Principal {
             case 5 -> obtenerReporteCitas.run();
             case 6 -> obtenerCitasProgramadas.run();
             case 7 -> obtenerCitasPorPaciente.run();
+            case 8 -> consultasCorrelacionadas.run();
             case 0 -> System.out.println("Saliendo del sistema...");
             default -> System.out.println("Opción no válida. Intente de nuevo.");
         }

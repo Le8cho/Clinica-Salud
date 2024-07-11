@@ -51,4 +51,18 @@ public class Medico {
 
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cita> citaList;
+    @Override
+    public String toString() {
+        return "Medico{" +
+                "id=" + id +
+                ", nombres='" + nombres + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", dni='" + dni + '\'' +
+                ", correo='" + correo + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", sexo=" + sexo +
+                ", estado=" + estado +
+                ", especialidad='" + especialidad + '\'' +
+                '}';
+    }
 }

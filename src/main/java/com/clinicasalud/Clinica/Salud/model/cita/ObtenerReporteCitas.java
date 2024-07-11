@@ -4,6 +4,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -31,11 +32,12 @@ public class ObtenerReporteCitas {
                 String startDateStr = input.nextLine();
                 System.out.println("Ingrese la fecha de fin (yyyy-MM-dd HH:mm): ");
                 String endDateStr = input.nextLine();
-
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                LocalDateTime startDate = LocalDateTime.parse(startDateStr, formatter);
-                LocalDateTime endDate = LocalDateTime.parse(endDateStr, formatter);
+                LocalDateTime startDateTime = LocalDateTime.parse(startDateStr, formatter);
+                LocalDateTime endDateTime = LocalDateTime.parse(endDateStr, formatter);
 
+                LocalDate startDate = startDateTime.toLocalDate();
+                LocalDate endDate = endDateTime.toLocalDate();
                 List<Cita> citas = citaService.obtenerCitasPorRangoDeFechas(startDate, endDate);
                 imprimirReporte(citas);
             }

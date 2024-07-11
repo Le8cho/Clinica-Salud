@@ -53,10 +53,10 @@ public class Paciente {
     public String toString() {
         return "Paciente{" +
                 "idPaciente=" + idPaciente +
-                "\npersona=" + persona +
-                "\ndireccion='" + direccion + '\'' +
-                "\nfechaNacimiento=" + fechaNacimiento +
-                "\nestadoPaciente=" + estadoPaciente +
+                "/n persona=" + persona +
+                "/n direccion='" + direccion + '\'' +
+                " fechaNacimiento=" + fechaNacimiento +
+                " estadoPaciente=" + estadoPaciente +
                 '}';
     }
 

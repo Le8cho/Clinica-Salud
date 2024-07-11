@@ -7,6 +7,7 @@ import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,6 +40,12 @@ public class PacienteService {
 
     public Long obtenerIdPacientePorDni(String dni) {
         return pacienteRepository.getIdPacienteByDni(dni);
+    }
+    public List<Paciente> encontrarPacientesConCitas() {
+        return pacienteRepository.encontrarPacientesConCitas();
+    }
+    public List<Object[]> obtenerTodosPacientesConCitasYMedicos() {
+        return pacienteRepository.obtenerTodosPacientesConCitasYMedicos();
     }
 
     public boolean pacienteExiste(String dni) {

@@ -35,12 +35,11 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Persona{" +
-                "nombres='" + nombres + '\'' +
-                "\napellidos='" + apellidos + '\'' +
-                "\ndni='" + dni + '\'' +
-                "\nsexo=" + sexo +
-                "\ntelefono='" + telefono + '\'' +
+        return "Persona{" +"nombres='" + nombres + '\'' +
+                " apellidos='" + apellidos + '\'' +
+                " dni='" + dni + '\'' +
+                " sexo=" + sexo +
+                " telefono='" + telefono + '\'' +
                 '}';
     }
 }

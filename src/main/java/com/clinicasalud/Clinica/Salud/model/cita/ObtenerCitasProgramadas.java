@@ -22,7 +22,7 @@ public class ObtenerCitasProgramadas {
         boolean novalido=false;
         String contrasena;
         do{
-            System.out.println("Ingrese la contraseña");
+            System.out.println("Ingrese el DNI del medico");
             contrasena = input.nextLine();
             if (!medicoService.medicoExiste(contrasena)) {
                 System.out.println("El medico no existe.");

@@ -30,8 +30,7 @@ public class CitaService {
     private PacienteRepository pacienteRepository;
 
 
-
-    public List<Cita> obtenerCitasPorRangoDeFechas(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Cita> obtenerCitasPorRangoDeFechas(LocalDate startDate, LocalDate endDate) {
         return citaRepository.findByDateRange(startDate, endDate);
     }
 

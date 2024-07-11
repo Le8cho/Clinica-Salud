@@ -13,14 +13,13 @@ import java.util.List;
 public interface CitaRepository extends JpaRepository<Cita, Long> {
     
     List<Cita> findByPacienteIdPaciente(Long idPaciente);
-  
     @EntityGraph(attributePaths = {"paciente", "medico"})
     @Query("SELECT c FROM Cita c WHERE c.fecha BETWEEN :startDate AND :endDate")
-    List<Cita> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
+    List<Cita> findByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     @EntityGraph(attributePaths = {"paciente", "medico"})
     @Query("SELECT c FROM Cita c WHERE c.medico.id = :medicoId")
     List<Cita> findByMedico(@Param("medicoId") Long medicoId);
+
 
     @EntityGraph(attributePaths = {"paciente", "medico"})
     @Query("SELECT c FROM Cita c WHERE c.medico.id = :medicoId AND c.fecha= :fecha")
@@ -32,4 +31,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     @Query("SELECT COUNT(c) > 0 FROM Cita c WHERE c.medico.id = :idMedico AND c.fecha = :fecha AND c.horaInicio = :horaInicio")
     boolean existsByMedicoAndFechaAndHoraInicio(Long idMedico,LocalDate fecha, LocalTime horaInicio);
+
+
 }

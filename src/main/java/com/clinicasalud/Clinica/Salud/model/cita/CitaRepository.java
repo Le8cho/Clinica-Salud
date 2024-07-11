@@ -31,5 +31,5 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByEstado(@Param("estado") EstadoCita estado);
 
     @Query("SELECT COUNT(c) > 0 FROM Cita c WHERE c.medico.id = :idMedico AND c.fecha = :fecha AND c.horaInicio = :horaInicio")
-    boolean existsByMedicoAndFechaAndHoraInicio(@Param("idMedico") Long idMedico, @Param("fecha") LocalDate fecha, @Param("horaInicio") LocalTime horaInicio);
+    boolean existsByMedicoAndFechaAndHoraInicio(Long idMedico,LocalDate fecha, LocalTime horaInicio);
 }

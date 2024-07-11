@@ -51,7 +51,4 @@ public class Medico {
 
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cita> citaList;
-
-    public void setHorarioMedico(HorarioMedico horario) {
-    }
 }

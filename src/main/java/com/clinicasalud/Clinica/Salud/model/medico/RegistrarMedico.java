@@ -1,4 +1,5 @@
-package com.clinicasalud.Clinica.Salud;
+package com.clinicasalud.Clinica.Salud.model.medico;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
 import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedicoService;
 import com.clinicasalud.Clinica.Salud.model.medico.Especialidad;
 import com.clinicasalud.Clinica.Salud.model.medico.MedicoService;
@@ -22,7 +23,7 @@ public class RegistrarMedico {
 
     public void run(){
         System.out.println("Primero Se creara el horario del Médico");
-        //int id_horariomedico=registrarHorarioMedico();
+        var horarioMedico=crearHorarioMedico();
         boolean novalido=false;
         char sexo='M';
         int estado;
@@ -42,18 +43,7 @@ public class RegistrarMedico {
                 novalido=true;
             }
         }while(novalido);
-        do {
-            System.out.println("Ingrese el estado (0 Activo | 1 Inactivo)");
-            estado=input.nextInt();
-            input.nextLine();
-            if (estado== 1 || estado==0) {
-                novalido=false;
-            } else {
-                System.out.println("Entrada inválida. Por favor, ingrese (0 o 1).");
-                input.next();
-                novalido=true;
-            }
-        }while(novalido);
+        estado=0;
         do {
             System.out.println("Ingrese el DNI (12345678)");
             dni = input.nextLine();
@@ -106,7 +96,7 @@ public class RegistrarMedico {
                 if (opcion == 0) {
                     return;
                 } else if (opcion == 1) {
-                    medicoService.crearMedico(sexo, nombres, apellidos, dni, telefono, correo, estado, especialidad1);
+                    medicoService.crearMedico(horarioMedico,sexo, nombres, apellidos, dni, telefono, correo, estado, especialidad1);
                     System.out.println("Médico registrado exitosamente.");
                     novalido = false;
                 } else {
@@ -121,27 +111,20 @@ public class RegistrarMedico {
         }while(novalido);
         input.close();
     }
-    public void registrarHorarioMedico(){
-
-        boolean continuar = true;
-        while (continuar) {
+    public HorarioMedico crearHorarioMedico(){
             System.out.println("Ingrese el horario del médico:");
             LocalTime horadeInicio = leerHora("Hora de inicio (HH:MM): ");
             LocalTime horaFin = leerHora("Hora de fin (HH:MM): ");
 
             if (horadeInicio != null && horaFin != null) {
                 if (horadeInicio.isBefore(horaFin)) {
-                    horarioMedicoService.registrarHorarioMedico(horadeInicio,horaFin);
                     System.out.println("Horario del médico registrado exitosamente.");
+                    return horarioMedicoService.registrarHorarioMedico(horadeInicio,horaFin);
                 } else {
                     System.out.println("La hora de inicio debe ser anterior a la hora de fin.");
                 }
             }
-
-            System.out.print("¿Desea registrar otro horario? (S/N): ");
-            String respuesta = input.nextLine().trim().toUpperCase();
-            continuar = respuesta.equals("S");
-        }
+        return null;
     }
     private LocalTime leerHora(String mensaje) {
         while (true) {

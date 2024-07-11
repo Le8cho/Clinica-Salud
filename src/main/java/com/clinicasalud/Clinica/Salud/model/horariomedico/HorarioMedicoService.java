@@ -12,11 +12,11 @@ public class HorarioMedicoService {
     private final Scanner input = new Scanner(System.in);
     @Autowired
     private HorarioMedicoJpaRepository horarioMedicoJpaRepository;
-    public void registrarHorarioMedico(LocalTime horadeInicio, LocalTime horaFin){
+    public HorarioMedico registrarHorarioMedico(LocalTime horadeInicio, LocalTime horaFin){
         HorarioMedico horarioMedico = new HorarioMedico();
         horarioMedico.setHoraInicio(Time.valueOf(horadeInicio));
         horarioMedico.setHoraFin(Time.valueOf(horaFin));
-        horarioMedicoJpaRepository.save(horarioMedico);
+        return horarioMedicoJpaRepository.save(horarioMedico);
     }
 
 

@@ -77,7 +77,6 @@ public class CitaService {
     }
     public boolean existeCita(Long idMedico, LocalDate fecha, LocalTime horaInicio){
         return (citaRepository.existsByMedicoAndFechaAndHoraInicio(idMedico, fecha, horaInicio));
-
     }
     @Transactional
     public void registrarCita(Long idPaciente, Long idMedico, LocalTime horaInicio, LocalDate fecha, String motivoConsulta, EstadoCita estadoCita) {

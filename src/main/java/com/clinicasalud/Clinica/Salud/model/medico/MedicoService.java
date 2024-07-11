@@ -1,4 +1,5 @@
 package com.clinicasalud.Clinica.Salud.model.medico;
+import com.clinicasalud.Clinica.Salud.model.horariomedico.HorarioMedico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,9 @@ public class MedicoService {
     public long obtenerIdMedicoPorNombreYApellido(String nombre, String apellido) {
         return medicoRepository.getIdMedicoByNombreAndApellido(nombre, apellido);
     }
-    public void crearMedico(char sexo, String nombres,String apellidos, String dni, String telefono, String correo,int estado, Especialidad especialidad){
+    public void crearMedico(HorarioMedico horarioMedico, char sexo, String nombres, String apellidos, String dni, String telefono, String correo, int estado, Especialidad especialidad){
         Medico medico = new Medico();
+        medico.setIdHorarioMedico(horarioMedico);
         medico.setNombres(nombres);
         medico.setApellidos(apellidos);
         medico.setDni(dni);

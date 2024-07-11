@@ -1,4 +1,4 @@
-package com.clinicasalud.Clinica.Salud;
+package com.clinicasalud.Clinica.Salud.model.cita;
 
 import com.clinicasalud.Clinica.Salud.model.cita.CitaService;
 import com.clinicasalud.Clinica.Salud.model.cita.EstadoCita;
